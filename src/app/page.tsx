@@ -1,65 +1,187 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main className="bg-white">
+      {/* Hero Banner */}
+      <section className="relative h-screen">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
+          src="/images/hero.jpg"
+          alt="Wedding"
+          fill
+          className="object-cover"
           priority
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+
+        <div className="absolute inset-0 bg-black/30" />
+
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white">
+            <p className="tracking-[8px] uppercase text-sm mb-4">
+              Luxury Wedding Studio
+            </p>
+
+            <h2 className="text-6xl md:text-8xl font-extralight tracking-wide">
+              DO WEDDING
+            </h2>
+
+            <Link
+  href="/lien-he"
+        className="inline-block mt-8 bg-[#c8a86b] text-white px-10 py-4 rounded-full hover:bg-[#b79452] duration-300"
+      >
+        ĐẶT LỊCH TƯ VẤN
+      </Link>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+      </section>
+
+      {/* Giới thiệu */}
+      <section className="max-w-5xl mx-auto py-28 px-8 text-center">
+        <p className="text-[#c8a86b] uppercase tracking-[6px]">
+          About Us
+        </p>
+
+        <h3 className="text-5xl mt-6 font-light">
+          Khoảnh Khắc Đẹp Nhất Của Tình Yêu
+        </h3>
+
+        <p className="mt-8 text-gray-600 leading-8">
+          DO Wedding mang đến những bộ ảnh cưới tinh tế,
+          sang trọng và giàu cảm xúc. Chúng tôi đồng hành
+          cùng các cặp đôi trong hành trình lưu giữ những
+          khoảnh khắc đẹp nhất của cuộc đời.
+        </p>
+      </section>
+
+      {/* Dịch vụ */}
+<section className="bg-[#faf8f5] py-28">
+  <div className="max-w-7xl mx-auto px-8">
+
+    <div className="text-center mb-16">
+      <p className="uppercase tracking-[6px] text-[#c8a86b]">
+        Services
+      </p>
+
+      <h3 className="text-5xl font-light mt-4">
+        DỊCH VỤ CƯỚI CAO CẤP
+      </h3>
     </div>
+
+    <div className="grid md:grid-cols-3 gap-8">
+
+      <div className="bg-white p-6 rounded-2xl shadow-sm hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+        <div className="overflow-hidden rounded-lg mb-6">
+          <Image
+            src="/images/service1.png"
+            alt="Chụp ảnh cưới"
+            width={500}
+            height={400}
+            className="w-full h-72 object-cover hover:scale-110 duration-500"
+          />
+        </div>
+
+        <h4 className="text-xl">Chụp Ảnh Cưới</h4>
+
+        <p className="text-gray-600 mt-3">
+          Studio - Ngoại cảnh - Concept cao cấp
+        </p>
+
+        <Link
+          href="/dich-vu"
+          className="mt-6 inline-block text-[#c8a86b] uppercase tracking-wider text-sm hover:underline"
+        >
+          Xem chi tiết →
+        </Link>
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow-sm hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+        <div className="overflow-hidden rounded-lg mb-6">
+          <Image
+            src="/images/service2.jpg"
+            alt="Trang phục cưới"
+            width={500}
+            height={400}
+            className="w-full h-72 object-cover hover:scale-110 duration-500"
+          />
+        </div>
+
+        <h4 className="text-xl">Trang Phục Cưới</h4>
+
+        <p className="text-gray-600 mt-3">
+          Váy cưới và vest cao cấp
+        </p>
+
+        <Link
+        href="/dich-vu"
+        className="mt-6 inline-block text-[#c8a86b] uppercase tracking-wider text-sm hover:underline"
+      >
+        Xem chi tiết →
+      </Link>
+      </div>
+
+      <div className="bg-white p-6 rounded-2xl shadow-sm hover:-translate-y-2 hover:shadow-xl transition-all duration-300">
+        <div className="overflow-hidden rounded-lg mb-6">
+          <Image
+            src="/images/service3.jpg"
+            alt="Wedding Day"
+            width={500}
+            height={400}
+            className="w-full h-72 object-cover hover:scale-110 duration-500"
+          />
+        </div>
+
+        <h4 className="text-xl">Wedding Day</h4>
+
+        <p className="text-gray-600 mt-3">
+          Quay phim, chụp hình ngày cưới
+        </p>
+
+        <Link
+          href="/dich-vu"
+          className="mt-6 inline-block text-[#c8a86b] uppercase tracking-wider text-sm hover:underline"
+        >
+          Xem chi tiết →
+        </Link>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+      {/* Form tư vấn */}
+      <section className="max-w-4xl mx-auto py-28 px-8">
+        <h3 className="text-center text-5xl font-light mb-12 text-[#c8a86b]">
+          ĐẶT LỊCH TƯ VẤN
+        </h3>
+
+        <div className="grid gap-5">
+          <input
+            placeholder="Họ và tên"
+            className="border border-gray-200 p-4 rounded-xl"
+          />
+
+          <input
+            placeholder="Số điện thoại"
+            className="border border-gray-200 p-4 rounded-xl"
+          />
+
+          <input
+            placeholder="Email"
+            className="border border-gray-200 p-4 rounded-xl"
+          />
+
+          <textarea
+            placeholder="Nội dung cần tư vấn"
+            className="border border-gray-200 p-4 h-40 rounded-xl"
+          />
+
+          <button className="bg-[#c8a86b] text-white py-4 rounded-xl hover:bg-[#b79452] duration-300">
+            GỬI THÔNG TIN
+          </button>
+        </div>
+      </section>
+    </main>
   );
 }
