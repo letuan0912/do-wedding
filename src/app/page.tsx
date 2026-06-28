@@ -18,9 +18,9 @@ export default function Home() {
 
       <WhyChooseUs />
 
-      <Services />
-
       <Counter />
+
+      <Services />
 
       <HomeGallery />
 

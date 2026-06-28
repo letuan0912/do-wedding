@@ -1,121 +1,152 @@
 "use client";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-
-import "swiper/css";
-
+import { useState } from "react";
 import Image from "next/image";
+import {
+  Star,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
+import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
 
-const testimonials = [
-  {
-    name: "Minh & Linh",
-    location: "TP. Hồ Chí Minh",
-    avatar: "/images/avatar1.jpg",
-    review:
-      "Đội ngũ rất chuyên nghiệp. Bộ ảnh vượt ngoài mong đợi và lưu giữ được rất nhiều cảm xúc.",
-  },
-  {
-    name: "Khánh & Vy",
-    location: "Đồng Nai",
-    avatar: "/images/avatar2.jpg",
-    review:
-      "Concept cực đẹp, ekip vui vẻ, chỉnh ảnh rất nhanh và cực kỳ có tâm.",
-  },
-  {
-    name: "Tuấn & Hân",
-    location: "Bình Dương",
-    avatar: "/images/avatar3.jpg",
-    review:
-      "Nếu chụp cưới lần nữa chắc chắn vẫn chọn DO WEDDING.",
-  },
-];
+import { testimonials } from "@/data/testimonials";
+
 export default function Testimonials() {
+  const [active, setActive] = useState(0);
+
+  const prev = () => {
+    setActive((prev) =>
+      prev === 0 ? testimonials.length - 1 : prev - 1
+    );
+  };
+
+  const next = () => {
+    setActive((prev) =>
+      prev === testimonials.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const current = testimonials[active];
+
   return (
-    <section className="py-32 bg-[#faf8f5]">
+  <Section className="bg-[#121212] text-white">
 
-      <Container>
+    <Container>
 
-        <SectionTitle
-          subtitle="Testimonials"
-          title="KHÁCH HÀNG NÓI GÌ"
-          description="Niềm hạnh phúc của khách hàng là động lực lớn nhất của DO WEDDING."
-        />
+      <SectionTitle
+        eyebrow="Testimonials"
+        title="KHÁCH HÀNG NÓI GÌ"
+        description="Những cảm nhận chân thật từ các cặp đôi đã đồng hành cùng DO WEDDING."
+      />
+      <div className="mt-20">
 
-        <Swiper
-          modules={[Autoplay]}
-          autoplay={{
-            delay: 3500,
-          }}
-          loop
-          spaceBetween={30}
-          breakpoints={{
-            0: {
-              slidesPerView: 1,
-            },
-            768: {
-              slidesPerView: 2,
-            },
-            1200: {
-              slidesPerView: 3,
-            },
-          }}
-          className="mt-20"
-        >
+  <div className="relative mx-auto max-w-6xl">
 
-          {testimonials.map((item) => (
+    <div className="grid grid-cols-12 items-center gap-6">
+      <div className="col-span-2 hidden lg:block">
 
-            <SwiperSlide key={item.name}>
+  <Image
+    src={
+      testimonials[
+        (active - 1 + testimonials.length) %
+          testimonials.length
+      ].image
+    }
+    alt=""
+    width={300}
+    height={500}
+    className="h-[340px] rounded-3xl object-cover opacity-30 blur-[1px]"
+  />
 
-              <div className="bg-white rounded-[30px] p-10 shadow-md hover:shadow-xl duration-500 h-full">
+</div>
+<div className="col-span-12 lg:col-span-8">
 
-                <div className="flex gap-1 text-[#c8a86b] text-xl">
+  <Image
+    src={current.image}
+    alt={current.name}
+    width={1000}
+    height={700}
+    className="h-[480px] w-full rounded-[40px] object-cover"
+  />
+  <div className="-mt-12 flex justify-center">
 
-                  ★★★★★
+  <Image
+    src={current.avatar}
+    alt={current.name}
+    width={90}
+    height={90}
+    className="rounded-full border-4 border-white"
+  />
 
-                </div>
+</div>
+<div className="mt-8 flex justify-center gap-1">
 
-                <p className="mt-8 leading-8 text-gray-600">
-                  "{item.review}"
-                </p>
+  {Array.from({ length: 5 }).map((_, i) => (
+    <Star
+      key={i}
+      size={20}
+      fill="#c8a86b"
+      color="#c8a86b"
+    />
+  ))}
 
-                <div className="flex items-center gap-4 mt-10">
+</div>
+<p className="mx-auto mt-8 max-w-3xl text-center text-xl leading-10 text-gray-300">
+  "{current.content}"
+</p>
 
-                  <Image
-                    src={item.avatar}
-                    alt={item.name}
-                    width={70}
-                    height={70}
-                    className="rounded-full object-cover"
-                  />
+<h3 className="mt-8 text-center text-3xl">
+  {current.name}
+</h3>
 
-                  <div>
+<p className="mt-2 text-center text-gray-400">
+  {current.location}
+</p>
+</div>
+<div className="col-span-2 hidden lg:block">
 
-                    <h4 className="text-xl font-light">
-                      {item.name}
-                    </h4>
+  <Image
+    src={
+      testimonials[
+        (active + 1) %
+          testimonials.length
+      ].image
+    }
+    alt=""
+    width={300}
+    height={500}
+    className="h-[340px] rounded-3xl object-cover opacity-30 blur-[1px]"
+  />
 
-                    <p className="text-gray-500 text-sm">
-                      {item.location}
-                    </p>
+</div>
+<div className="mt-12 flex justify-center gap-5">
 
-                  </div>
+  <button
+    onClick={prev}
+    className="rounded-full border border-white/20 p-4 transition hover:bg-[#c8a86b]"
+  >
+    <ChevronLeft />
+  </button>
 
-                </div>
+  <button
+    onClick={next}
+    className="rounded-full border border-white/20 p-4 transition hover:bg-[#c8a86b]"
+  >
+    <ChevronRight />
+  </button>
 
-              </div>
+</div>
+    </div>
 
-            </SwiperSlide>
+  </div>
 
-          ))}
+</div>
 
-        </Swiper>
+    </Container>
 
-      </Container>
-
-    </section>
-  );
+  </Section>
+);
 }

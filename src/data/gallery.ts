@@ -1,45 +1,64 @@
-export interface GalleryItem {
+export type GalleryItem = {
   id: number;
   title: string;
-  category: "studio" | "outdoor" | "wedding";
+  category: "Studio" | "Outdoor" | "Pre Wedding";
   image: string;
-}
+};
 
-export const gallery: GalleryItem[] = [
+export const gallery = [
   {
     id: 1,
-    title: "Elegant Studio",
-    category: "studio",
-    image: "/images/album/album1.jpg",
+    title: "Studio Luxury",
+    category: "Studio",
+    image: "/images/gallery/gallery-1.jpg",
   },
+
   {
     id: 2,
-    title: "Classic Love",
-    category: "studio",
-    image: "/images/album/album2.jpg",
+    title: "Đà Lạt",
+    category: "Outdoor",
+    image: "/images/gallery/gallery-2.jpg",
   },
+
   {
     id: 3,
-    title: "Sunset Outdoor",
-    category: "outdoor",
-    image: "/images/album/album3.jpg",
+    title: "Hồ Cốc",
+    category: "Outdoor",
+    image: "/images/gallery/gallery-3.jpg",
   },
+
   {
     id: 4,
-    title: "Forest Story",
-    category: "outdoor",
-    image: "/images/album/album4.jpg",
+    title: "Vintage",
+    category: "Studio",
+    image: "/images/gallery/gallery-4.jpg",
   },
+
   {
     id: 5,
-    title: "Luxury Wedding",
-    category: "wedding",
-    image: "/images/album/album5.jpg",
+    title: "Pre Wedding",
+    category: "Pre Wedding",
+    image: "/images/gallery/gallery-5.jpg",
   },
+
   {
     id: 6,
-    title: "Dream Wedding",
-    category: "wedding",
-    image: "/images/album/album6.jpg",
+    title: "Luxury Concept",
+    category: "Studio",
+    image: "/images/gallery/gallery-6.jpg",
+  },
+
+  {
+    id: 7,
+    title: "Sunset",
+    category: "Outdoor",
+    image: "/images/gallery/gallery-7.jpg",
+  },
+
+  {
+    id: 8,
+    title: "Minimal",
+    category: "Studio",
+    image: "/images/gallery/gallery-8.jpg",
   },
 ];

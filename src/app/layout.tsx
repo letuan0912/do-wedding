@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-
+import LuxuryCursor from "@/components/ui/LuxuryCursor";
 import Header from "@/components/Header";
 import Footer from "@/components/layout/Footer";
 
@@ -33,6 +33,7 @@ export default function RootLayout({
         <Header />
 
         <main className="flex-1">
+          <LuxuryCursor />
           {children}
         </main>
 
