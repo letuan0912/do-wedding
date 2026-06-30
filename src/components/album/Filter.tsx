@@ -1,64 +1,115 @@
 "use client";
 
+import { motion } from "framer-motion";
+
+const categories = [
+  {
+    label: "Tất cả",
+    value: "all",
+  },
+  {
+    label: "Studio",
+    value: "studio",
+  },
+  {
+    label: "Ngoại cảnh",
+    value: "outdoor",
+  },
+  {
+    label: "Wedding Day",
+    value: "wedding",
+  },
+];
+
 interface Props {
   value: string;
   onChange: (value: string) => void;
 }
-
-const tabs = [
-  {
-    id: "all",
-    title: "Tất Cả",
-  },
-  {
-    id: "studio",
-    title: "Studio",
-  },
-  {
-    id: "outdoor",
-    title: "Outdoor",
-  },
-  {
-    id: "wedding",
-    title: "Wedding",
-  },
-];
 
 export default function Filter({
   value,
   onChange,
 }: Props) {
   return (
-    <section className="py-20 bg-white">
+    <section className="bg-[#faf8f5] py-10">
 
-      <div className="max-w-7xl mx-auto px-6 text-center">
+      <div className="mx-auto flex max-w-7xl justify-center px-6">
 
-        <p className="uppercase tracking-[6px] text-[#c8a86b]">
-          Collections
-        </p>
+        <div
+          className="
+            flex
+            flex-wrap
+            items-center
+            gap-3
+            rounded-full
+            border
+            border-[#ece4d5]
+            bg-white
+            p-2
+            shadow-[0_15px_50px_rgba(0,0,0,.04)]
+          "
+        >
 
-        <h2 className="text-5xl font-light mt-4">
-          BỘ SƯU TẬP
-        </h2>
+          {categories.map((item) => {
 
-        <div className="mt-12 flex flex-wrap justify-center gap-5">
+            const active = value === item.value;
 
-          {tabs.map((item) => (
+            return (
+              <button
+                key={item.value}
+                onClick={() => onChange(item.value)}
+                className="
+                  relative
+                  overflow-hidden
+                  rounded-full
+                  px-7
+                  py-3
+                  text-sm
+                  font-medium
+                  uppercase
+                  tracking-[2px]
+                "
+              >
 
-            <button
-              key={item.id}
-              onClick={() => onChange(item.id)}
-              className={`px-7 py-3 rounded-full duration-300 border
-                ${
-                  value === item.id
-                    ? "bg-[#c8a86b] text-white border-[#c8a86b]"
-                    : "bg-white border-gray-200 hover:border-[#c8a86b]"
-                }`}
-            >
-              {item.title}
-            </button>
+                {active && (
 
-          ))}
+                  <motion.div
+                    layoutId="album-filter"
+                    transition={{
+                      type: "spring",
+                      stiffness: 280,
+                      damping: 28,
+                    }}
+                    className="
+                      absolute
+                      inset-0
+                      rounded-full
+                      bg-[#c8a86b]
+                    "
+                  />
+
+                )}
+
+                <span
+                  className={`
+                    relative
+                    z-10
+                    transition
+
+                    ${
+                      active
+                        ? "text-white"
+                        : "text-gray-600 hover:text-[#222]"
+                    }
+                  `}
+                >
+                  {item.label}
+                </span>
+
+              </button>
+            );
+
+          })}
 
         </div>
 

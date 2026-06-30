@@ -3,11 +3,11 @@ import Link from "next/link";
 
 export default function Hero() {
   return (
-    <section className="relative h-[75vh] overflow-hidden">
+    <section className="relative h-[60vh] lg:h-[68vh] overflow-hidden">
 
       <Image
         src="/images/hero.jpg"
-        alt="Wedding Album"
+        alt="Wedding Collection"
         fill
         priority
         className="object-cover scale-105"
@@ -15,59 +15,47 @@ export default function Hero() {
 
       {/* Overlay */}
 
-      <div className="absolute inset-0 bg-black/45" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/30 to-black/55" />
 
       {/* Content */}
 
       <div className="absolute inset-0 flex items-center justify-center">
 
-        <div className="text-center text-white px-6">
+        <div className="max-w-3xl px-6 text-center text-white">
 
-          <p className="uppercase tracking-[8px] text-[#d4b06a] text-sm">
-            DO WEDDING
+          <p className="uppercase tracking-[8px] text-[#d8b97a] text-sm">
+            COLLECTIONS
           </p>
 
-          <h1 className="mt-6 text-6xl md:text-8xl font-extralight tracking-wide">
-            ALBUM
+          <h1 className="mt-5 text-5xl md:text-7xl font-extralight">
+            Bộ Sưu Tập
           </h1>
 
-          <p className="mt-8 max-w-2xl mx-auto text-lg text-gray-200 leading-8">
-            Khám phá những bộ ảnh cưới mang phong cách sang trọng,
-            tinh tế và giàu cảm xúc được thực hiện bởi DO WEDDING.
+          <p className="mt-8 text-lg leading-8 text-gray-200">
+            Mỗi album là một hành trình cảm xúc được ghi lại bằng ánh sáng,
+            khoảnh khắc và những câu chuyện chân thật nhất.
           </p>
 
-          <div className="mt-12 flex flex-wrap justify-center gap-5">
+          <Link
+            href="#gallery"
+            className="
+              mt-12
+              inline-flex
+              rounded-full
+              border
+              border-white/30
+              bg-white/10
+              px-9
+              py-4
+              backdrop-blur-xl
+              transition
+              hover:bg-white
+              hover:text-black
+            "
+          >
+            Khám phá Album
+          </Link>
 
-            <Link
-              href="/lien-he"
-              className="rounded-full bg-[#c8a86b] px-10 py-4 hover:bg-[#b79555] duration-300"
-            >
-              ĐẶT LỊCH CHỤP
-            </Link>
-
-            <a
-              href="#gallery"
-              className="rounded-full border border-white px-10 py-4 hover:bg-white hover:text-black duration-300"
-            >
-              KHÁM PHÁ
-            </a>
-
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* Scroll */}
-
-      <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-white animate-bounce">
-
-        <p className="text-xs tracking-[5px] uppercase">
-          Scroll
-        </p>
-
-        <div className="text-2xl text-center mt-2">
-          ↓
         </div>
 
       </div>
