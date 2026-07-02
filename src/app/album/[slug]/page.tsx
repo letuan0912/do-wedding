@@ -3,10 +3,10 @@ import { notFound } from "next/navigation";
 import { albums } from "@/data/albums";
 
 import AlbumHero from "@/components/album/AlbumHero";
+import AlbumInfo from "@/components/album/AlbumInfo";
 import AlbumGallery from "@/components/album/AlbumGallery";
 import RelatedAlbums from "@/components/album/RelatedAlbums";
 import CTA from "@/components/home/CTA";
-import AlbumInfo from "@/components/album/AlbumInfo";
 
 interface Props {
   params: Promise<{
@@ -31,11 +31,13 @@ export default async function AlbumDetailPage({
     <>
       <AlbumHero album={album} />
 
+      <AlbumInfo album={album} />
+
       <AlbumGallery album={album} />
 
-      <RelatedAlbums album={album} />
+      {/* Wedding Film sẽ thêm ở đây */}
 
-      <AlbumInfo album={album} />
+      <RelatedAlbums album={album} />
 
       <CTA />
     </>
