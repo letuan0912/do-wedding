@@ -2,8 +2,8 @@ import Image from "next/image";
 
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
-import Button from "@/components/ui/Button";
-
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 export default function About() {
   return (
     <section className="bg-white py-24">
@@ -91,9 +91,11 @@ export default function About() {
 
             <div className="mt-14">
 
-              <Button href="/album">
-                Xem Album
-              </Button>
+          <Link href="/album">
+            <Button>
+              Xem Album
+            </Button>
+          </Link>
 
             </div>
 
