@@ -5,6 +5,7 @@ import { albums } from "@/data/albums";
 import AlbumHero from "@/components/album/AlbumHero";
 import AlbumInfo from "@/components/album/AlbumInfo";
 import AlbumGallery from "@/components/album/AlbumGallery";
+import WeddingFilm from "@/components/album/WeddingFilm";
 import RelatedAlbums from "@/components/album/RelatedAlbums";
 import CTA from "@/components/home/CTA";
 
@@ -35,7 +36,10 @@ export default async function AlbumDetailPage({
 
       <AlbumGallery album={album} />
 
-      {/* Wedding Film sẽ thêm ở đây */}
+      <WeddingFilm
+        video={album.video}
+        cover={album.cover}
+      />
 
       <RelatedAlbums album={album} />
 
