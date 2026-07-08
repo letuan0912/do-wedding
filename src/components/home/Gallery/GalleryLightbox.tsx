@@ -3,15 +3,11 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
-
 import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
-
 import { gallery, GalleryItem } from "@/data/gallery";
-
-import GalleryGrid from "./Gallery/GalleryGrid";
-import GalleryLightbox from "./Gallery/GalleryLightbox";
+import GalleryGrid from "./GalleryGrid";
 
 const filters = [
   "Tất cả",
