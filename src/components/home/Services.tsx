@@ -3,8 +3,8 @@ import Image from "next/image";
 import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
-import Card from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import Card from "@/components/ui/Card";
+import { Button } from "@/components/ui/Button";
 import { services } from "@/data/services";
 
 export default function Services() {
