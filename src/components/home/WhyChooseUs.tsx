@@ -40,7 +40,7 @@ export default function WhyChooseUs() {
     <section className="py-32 bg-[#faf8f5]">
       <Container>
         <SectionTitle
-          subtitle="Why Choose Us"
+          eyebrow="Why Choose Us"
           title="VÌ SAO CHỌN DO WEDDING"
           description="Chúng tôi không chỉ chụp ảnh cưới mà còn lưu giữ những cảm xúc đẹp nhất trong hành trình tình yêu của bạn."
         />

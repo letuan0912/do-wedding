@@ -1,5 +1,5 @@
 import Image from "next/image";
-
+import Link from "next/link";
 import Section from "@/components/ui/Section";
 import Container from "@/components/ui/Container";
 import SectionTitle from "@/components/ui/SectionTitle";
@@ -31,7 +31,7 @@ export default function Services() {
               <div className="overflow-hidden">
 
                 <Image
-                  src={service.image}
+                  src={service.cover}
                   alt={service.title}
                   width={600}
                   height={700}
@@ -52,9 +52,11 @@ export default function Services() {
 
                 <div className="mt-8">
 
-                  <Button href="/dich-vu">
-                    Xem Chi Tiết
-                  </Button>
+                  <Button asChild>
+                    <Link href="/dich-vu">
+                        Xem Chi Tiết
+                    </Link>
+                </Button>
 
                 </div>
 

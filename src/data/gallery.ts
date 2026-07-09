@@ -5,7 +5,7 @@ export type GalleryItem = {
   image: string;
 };
 
-export const gallery = [
+export const gallery: GalleryItem[] = [
   {
     id: 1,
     title: "Studio Luxury",

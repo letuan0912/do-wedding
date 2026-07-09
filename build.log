@@ -1,0 +1,22 @@
+
+> do-wedding@0.1.0 build
+> next build
+
+▲ Next.js 16.2.9 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 2.3s
+  Running TypeScript ...
+Failed to type check.
+
+./src/components/home/Services.tsx:34:32
+Type error: Property 'image' does not exist on type 'Service'.
+
+  [90m32 |[0m
+  [90m33 |[0m                 <[33mImage[0m
+[31m[1m>[0m [90m34 |[0m                   src={service.image}
+  [90m   |[0m                                [31m[1m^[0m
+  [90m35 |[0m                   alt={service.title}
+  [90m36 |[0m                   width={[35m600[0m}
+  [90m37 |[0m                   height={[35m700[0m}
+Next.js build worker exited with code: 1 and signal: null

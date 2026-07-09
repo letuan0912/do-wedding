@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
-const container = {
+const container: Variants = {
   hidden: {},
   show: {
     transition: {
@@ -11,7 +11,7 @@ const container = {
   },
 };
 
-const item = {
+const item: Variants = {
   hidden: {
     opacity: 0,
     y: 30,
@@ -36,32 +36,20 @@ export default function HeroHeading() {
       animate="show"
       className="mt-8"
     >
-      {/* Eyebrow */}
-
       <motion.p
         variants={item}
-        className="
-          mb-6
-          text-[11px]
-          uppercase
-          tracking-[7px]
-          text-[#b89559]
-        "
+        className="mb-6 text-[11px] uppercase tracking-[7px] text-[#b89559]"
       >
         Nghệ Thuật Kể Chuyện Bằng Hình Ảnh
       </motion.p>
-
-      {/* Heading */}
 
       <motion.h1
         variants={item}
         className="
           max-w-[680px]
-
           text-[44px]
           md:text-[54px]
           xl:text-[60px]
-
           font-light
           leading-[0.95]
           tracking-[-2px]
@@ -69,36 +57,27 @@ export default function HeroHeading() {
         "
       >
         Mỗi Khoảnh Khắc
-
         <br />
-
         <span className="bg-gradient-to-r from-[#b99245] via-[#d8bf88] to-[#e8d3a6] bg-clip-text text-transparent">
           Đều Là
-        </span>
-
-        {" "}
-
+        </span>{" "}
         <span className="text-[#222]">
           Một Kiệt Tác.
         </span>
       </motion.h1>
-
-      {/* Description */}
 
       <motion.p
         variants={item}
         className="
           mt-8
           max-w-[560px]
-
           text-[17px]
           leading-8
           text-[#616161]
         "
       >
-        Lưu giữ những khoảnh khắc chân thật bằng ánh sáng,
-        cảm xúc và ngôn ngữ điện ảnh để mỗi bộ ảnh trở thành
-        một tác phẩm vượt thời gian.
+        Lưu giữ những khoảnh khắc chân thật bằng ánh sáng, cảm xúc và ngôn ngữ
+        điện ảnh để mỗi bộ ảnh trở thành một tác phẩm vượt thời gian.
       </motion.p>
     </motion.div>
   );
