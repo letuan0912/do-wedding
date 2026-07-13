@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import LuxuryCursor from "@/components/ui/LuxuryCursor";
-import Header from "@/components/Header";
-import Footer from "@/components/layout/Footer";
+import { Toaster } from "sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,16 +26,14 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} min-h-screen flex flex-col`}
+        className={`luxury-cursor ${geistSans.variable} ${geistMono.variable} min-h-screen`}
       >
-        <Header />
+        <Toaster
+          richColors
+          position="top-right"
+        />
 
-        <main className="flex-1">
-          <LuxuryCursor />
-          {children}
-        </main>
-
-        <Footer />
+        {children}
       </body>
     </html>
   );

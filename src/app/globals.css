@@ -80,12 +80,10 @@ body {
   }
 }
 
-@media (pointer:fine){
-
-*{
-cursor:none;
-}
-
+@media (pointer: fine) {
+  body.luxury-cursor * {
+    cursor: none;
+  }
 }
 
 :root {
