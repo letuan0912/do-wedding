@@ -2,9 +2,24 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Camera, Images, ChevronDown } from "lucide-react";
+import {
+  Camera,
+  Images,
+  ChevronDown,
+} from "lucide-react";
 
-import type { Album } from "@/data/albums";
+type Album = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  category: string;
+  cover: string;
+  images: string[];
+  featured: boolean;
+  isPublished: boolean;
+  sortOrder: number;
+};
 
 interface Props {
   album: Album;
@@ -32,6 +47,7 @@ export default function AlbumHero({
           alt={album.title}
           fill
           priority
+          sizes="100vw"
           className="object-cover"
         />
       </motion.div>
@@ -45,7 +61,6 @@ export default function AlbumHero({
       {/* Content */}
 
       <div className="relative z-10 flex h-full items-center justify-center px-6">
-
         <motion.div
           initial={{
             opacity: 0,
@@ -56,7 +71,7 @@ export default function AlbumHero({
             y: 0,
           }}
           transition={{
-            duration: .9,
+            duration: 0.9,
           }}
           className="max-w-5xl text-center text-white"
         >
@@ -78,7 +93,6 @@ export default function AlbumHero({
               backdrop-blur-xl
             "
           >
-
             <Camera
               size={18}
               className="text-[#d6b16b]"
@@ -87,71 +101,50 @@ export default function AlbumHero({
             <span className="text-xs uppercase tracking-[5px]">
               Wedding Collection
             </span>
-
           </div>
 
           {/* Category */}
 
           <p className="mt-10 uppercase tracking-[8px] text-[#d6b16b]">
-
             {album.category}
-
           </p>
 
           {/* Title */}
 
           <h1 className="mt-6 text-6xl font-extralight leading-tight md:text-8xl">
-
             {album.title}
-
           </h1>
 
           {/* Description */}
 
           <p className="mx-auto mt-8 max-w-3xl text-lg leading-9 text-white/80">
-
             {album.description}
-
           </p>
 
           {/* Stats */}
 
           <div className="mt-14 flex flex-wrap justify-center gap-10">
-
             <div>
-
               <p className="text-5xl font-extralight">
-
-                {album.images.length}
-
+                {album.images?.length ?? 0}
               </p>
 
               <p className="mt-2 text-xs uppercase tracking-[4px] text-white/60">
-
                 Photos
-
               </p>
-
             </div>
 
             <div className="h-16 w-px bg-white/20" />
 
             <div>
-
               <p className="text-5xl font-extralight">
-
                 4K
-
               </p>
 
               <p className="mt-2 text-xs uppercase tracking-[4px] text-white/60">
-
                 Quality
-
               </p>
-
             </div>
-
           </div>
 
           {/* Button */}
@@ -162,7 +155,7 @@ export default function AlbumHero({
               scale: 1.05,
             }}
             whileTap={{
-              scale: .97,
+              scale: 0.97,
             }}
             className="
               mt-14
@@ -178,15 +171,12 @@ export default function AlbumHero({
               hover:bg-[#b89555]
             "
           >
-
             <Images size={20} />
 
             Xem Bộ Ảnh
-
           </motion.a>
 
         </motion.div>
-
       </div>
 
       {/* Scroll */}
@@ -208,18 +198,14 @@ export default function AlbumHero({
           text-white
         "
       >
-
         <p className="text-xs uppercase tracking-[5px] text-white/70">
-
           Scroll
-
         </p>
 
         <ChevronDown
           size={28}
           className="mx-auto mt-3 text-[#d6b16b]"
         />
-
       </motion.div>
 
     </section>

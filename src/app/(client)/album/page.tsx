@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import Hero from "@/components/album/Hero";
 import Filter from "@/components/album/Filter";
-import FeaturedCollection from "../../components/album/FeaturedCollection";
+import FeaturedCollection from "@/components/album/FeaturedCollection";
 import AlbumGrid from "@/components/album/AlbumGrid";
 import CTA from "@/components/home/CTA";
 

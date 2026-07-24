@@ -1,142 +1,104 @@
 "use client";
 
-import useSWR from "swr";
+import { useEffect, useState } from "react";
+
 import {
-  MessageSquare,
-  Clock3,
-  CircleAlert,
-  CheckCircle2,
+  Images,
+  Star,
+  Eye,
+  Mail,
 } from "lucide-react";
 
-const fetcher = (url: string) =>
-  fetch(url).then((res) => res.json());
+import DashboardCard from "@/components/admin/dashboard/DashboardCard";
+
+type Dashboard = {
+  totalAlbums: number;
+  featuredAlbums: number;
+  publishedAlbums: number;
+  totalContacts: number;
+};
 
 export default function DashboardPage() {
-  const { data, isLoading } = useSWR(
-    "/api/admin/dashboard",
-    fetcher
-  );
+  const [data, setData] =
+    useState<Dashboard>({
+      totalAlbums: 0,
+      featuredAlbums: 0,
+      publishedAlbums: 0,
+      totalContacts: 0,
+    });
 
-  const cards = [
-    {
-      title: "Tổng liên hệ",
-      value: data?.totalContacts ?? 0,
-      icon: MessageSquare,
-    },
-    {
-      title: "Hôm nay",
-      value: data?.todayContacts ?? 0,
-      icon: Clock3,
-    },
-    {
-      title: "Chưa xử lý",
-      value: data?.pendingContacts ?? 0,
-      icon: CircleAlert,
-    },
-    {
-      title: "Đã xử lý",
-      value: data?.completedContacts ?? 0,
-      icon: CheckCircle2,
-    },
-  ];
+  const [loading, setLoading] =
+    useState(true);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch(
+          "/api/admin/dashboard"
+        );
+
+        const json = await res.json();
+
+        if (json.success) {
+          setData(json.data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    load();
+  }, []);
 
   return (
-    <div className="min-h-screen bg-[#f7f7f7] p-10">
-      <div className="mb-10">
-        <p className="text-sm uppercase tracking-[4px] text-[#c8a86b]">
-          ADMIN PANEL
+    <div className="space-y-10">
+
+      <div>
+        <p className="text-xs uppercase tracking-[5px] text-[#c8a86b]">
+          ADMIN
         </p>
 
-        <h1 className="mt-3 text-4xl font-light text-[#222]">
+        <h1 className="mt-3 text-4xl font-light">
           Dashboard
         </h1>
       </div>
 
-      {isLoading && (
-        <div className="mb-6 rounded-xl bg-white p-4 shadow">
-          Đang tải dữ liệu...
+      {loading ? (
+        <div className="rounded-3xl border bg-white p-12 text-center">
+          Đang tải...
+        </div>
+      ) : (
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+
+          <DashboardCard
+            title="Tổng Album"
+            value={data.totalAlbums}
+            icon={<Images size={28} />}
+          />
+
+          <DashboardCard
+            title="Album nổi bật"
+            value={data.featuredAlbums}
+            icon={<Star size={28} />}
+          />
+
+          <DashboardCard
+            title="Đang hiển thị"
+            value={data.publishedAlbums}
+            icon={<Eye size={28} />}
+          />
+
+          <DashboardCard
+            title="Liên hệ"
+            value={data.totalContacts}
+            icon={<Mail size={28} />}
+          />
+
         </div>
       )}
 
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
-        {cards.map((item) => {
-          const Icon = item.icon;
-
-          return (
-            <div
-              key={item.title}
-              className="
-                rounded-[28px]
-                border
-                border-[#ececec]
-                bg-white
-                p-8
-                shadow-sm
-                transition-all
-                duration-300
-                hover:-translate-y-1
-                hover:shadow-xl
-              "
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-500">
-                    {item.title}
-                  </p>
-
-                  <h2 className="mt-4 text-5xl font-light text-[#222]">
-                    {item.value}
-                  </h2>
-                </div>
-
-                <div className="rounded-2xl bg-[#c8a86b]/10 p-4">
-                  <Icon
-                    size={30}
-                    className="text-[#c8a86b]"
-                  />
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Liên hệ mới nhất */}
-
-      <div className="mt-10 rounded-[28px] border border-[#ececec] bg-white p-8 shadow-sm">
-        <h2 className="mb-6 text-2xl font-light">
-          Liên hệ mới nhất
-        </h2>
-
-        {data?.latestContacts?.length ? (
-          <div className="space-y-4">
-            {data.latestContacts.map((item: any) => (
-              <div
-                key={item._id}
-                className="flex items-center justify-between rounded-2xl border border-gray-100 p-5 hover:bg-[#faf8f4]"
-              >
-                <div>
-                  <h3 className="font-medium text-[#222]">
-                    {item.name}
-                  </h3>
-
-                  <p className="text-sm text-gray-500">
-                    {item.phone}
-                  </p>
-                </div>
-
-                <div className="text-sm text-gray-500">
-                  {new Date(item.createdAt).toLocaleDateString("vi-VN")}
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <p className="text-gray-500">
-            Chưa có khách hàng nào.
-          </p>
-        )}
-      </div>
     </div>
   );
 }

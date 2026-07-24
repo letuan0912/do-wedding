@@ -8,7 +8,7 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div className="luxury-cursor">
       <Header />
 
       <main className="flex-1">
@@ -17,6 +17,6 @@ export default function ClientLayout({
       </main>
 
       <Footer />
-    </>
+    </div>
   );
 }

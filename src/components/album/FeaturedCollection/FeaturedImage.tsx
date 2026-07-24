@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
-import type { Album } from "@/data/albums";
+
+import type { Album } from "@/types/album";
 
 interface Props {
   album: Album;
@@ -21,7 +22,7 @@ export default function FeaturedImage({
       <AnimatePresence mode="wait">
 
         <motion.div
-          key={album.id}
+          key={album._id}
           initial={{
             opacity: 0,
             scale: 0.96,
@@ -52,6 +53,7 @@ export default function FeaturedImage({
             alt={album.title}
             width={1200}
             height={1600}
+            priority
             className="
               h-[620px]
               w-full
@@ -118,7 +120,7 @@ export default function FeaturedImage({
 
           <div className="absolute bottom-8 left-8 right-8">
 
-            <p className="text-white/80 uppercase tracking-[4px] text-xs">
+            <p className="text-xs uppercase tracking-[4px] text-white/80">
               Featured Collection
             </p>
 

@@ -1,38 +1,33 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/mongodb";
+
+import Album from "@/models/Album";
 import Contact from "@/models/Contact";
 
 export async function GET() {
   try {
     await connectDB();
 
-    const totalContacts = await Contact.countDocuments();
-
-    const startOfToday = new Date();
-    startOfToday.setHours(0, 0, 0, 0);
-
-    const todayContacts = await Contact.countDocuments({
-      createdAt: {
-        $gte: startOfToday,
-      },
-    });
-
-    const latestContacts = await Contact.find()
-      .sort({ createdAt: -1 })
-      .limit(5);
+    const [
+      totalAlbums,
+      featuredAlbums,
+      publishedAlbums,
+      totalContacts,
+    ] = await Promise.all([
+      Album.countDocuments(),
+      Album.countDocuments({ featured: true }),
+      Album.countDocuments({ isPublished: true }),
+      Contact.countDocuments(),
+    ]);
 
     return NextResponse.json({
       success: true,
-
-      totalContacts,
-
-      todayContacts,
-
-      pendingContacts: totalContacts,
-
-      completedContacts: 0,
-
-      latestContacts,
+      data: {
+        totalAlbums,
+        featuredAlbums,
+        publishedAlbums,
+        totalContacts,
+      },
     });
   } catch (error) {
     console.error(error);
@@ -40,7 +35,6 @@ export async function GET() {
     return NextResponse.json(
       {
         success: false,
-        message: "Có lỗi xảy ra",
       },
       {
         status: 500,

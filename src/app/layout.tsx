@@ -26,7 +26,7 @@ export default function RootLayout({
   return (
     <html lang="vi">
       <body
-        className={`luxury-cursor ${geistSans.variable} ${geistMono.variable} min-h-screen`}
+        className={`${geistSans.variable} ${geistMono.variable} min-h-screen`}
       >
         <Toaster
           richColors

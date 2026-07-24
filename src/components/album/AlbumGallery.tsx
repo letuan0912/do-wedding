@@ -2,12 +2,15 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { PhotoProvider, PhotoView } from "react-photo-view";
+import {
+  PhotoProvider,
+  PhotoView,
+} from "react-photo-view";
 import { ArrowUpRight } from "lucide-react";
 
 import "react-photo-view/dist/react-photo-view.css";
 
-import type { Album } from "@/data/albums";
+import type { Album } from "@/types/album";
 
 interface Props {
   album: Album;
@@ -31,7 +34,7 @@ const item = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: .7,
+      duration: 0.7,
     },
   },
 };
@@ -40,8 +43,10 @@ export default function AlbumGallery({
   album,
 }: Props) {
   return (
-    <section className="bg-[#faf8f5] py-28">
-
+    <section
+      id="gallery"
+      className="bg-[#faf8f5] py-28"
+    >
       <div className="mx-auto max-w-7xl px-6">
 
         {/* Heading */}
@@ -71,23 +76,22 @@ export default function AlbumGallery({
             whileInView="show"
             viewport={{
               once: true,
-              amount: .1,
+              amount: 0.1,
             }}
             className="
               columns-1
+              gap-7
 
               md:columns-2
 
               xl:columns-3
-
-              gap-7
             "
           >
 
             {album.images.map((image, index) => (
 
               <motion.div
-                key={image}
+                key={`${image}-${index}`}
                 variants={item}
                 className="mb-7 break-inside-avoid"
               >
@@ -106,7 +110,7 @@ export default function AlbumGallery({
 
                     <Image
                       src={image}
-                      alt={album.title}
+                      alt={`${album.title} ${index + 1}`}
                       width={900}
                       height={1200}
                       className="
@@ -130,7 +134,6 @@ export default function AlbumGallery({
                         to-transparent
 
                         opacity-0
-
                         transition-all
                         duration-500
 
@@ -147,7 +150,6 @@ export default function AlbumGallery({
                         top-6
 
                         rounded-full
-
                         bg-white/10
 
                         px-4
@@ -155,15 +157,12 @@ export default function AlbumGallery({
 
                         text-xs
                         uppercase
-
                         tracking-[3px]
 
                         text-white
-
                         backdrop-blur-xl
 
                         opacity-0
-
                         transition
 
                         group-hover:opacity-100
@@ -177,12 +176,10 @@ export default function AlbumGallery({
                     <div
                       className="
                         absolute
-
-                        right-6
                         bottom-6
+                        right-6
 
                         flex
-
                         h-14
                         w-14
 
@@ -190,7 +187,6 @@ export default function AlbumGallery({
                         justify-center
 
                         rounded-full
-
                         bg-white/15
 
                         backdrop-blur-xl
@@ -200,16 +196,14 @@ export default function AlbumGallery({
                         transition-all
                         duration-300
 
-                        group-hover:translate-y-0
                         group-hover:opacity-100
+                        group-hover:rotate-45
                       "
                     >
-
                       <ArrowUpRight
                         size={22}
                         className="text-white"
                       />
-
                     </div>
 
                   </div>
@@ -225,7 +219,6 @@ export default function AlbumGallery({
         </PhotoProvider>
 
       </div>
-
     </section>
   );
 }

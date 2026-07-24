@@ -8,7 +8,7 @@ import {
   MapPin,
 } from "lucide-react";
 
-import type { Album } from "@/data/albums";
+import type { Album } from "@/types/album";
 
 interface Props {
   album: Album;
@@ -17,7 +17,7 @@ interface Props {
 const stats = (album: Album) => [
   {
     icon: Camera,
-    value: `${album.images.length}`,
+    value: `${album.images?.length ?? 0}`,
     label: "Photos",
   },
   {
@@ -37,7 +37,6 @@ export default function AlbumInfo({
 }: Props) {
   return (
     <section className="bg-white py-28">
-
       <div className="mx-auto grid max-w-7xl gap-24 px-6 lg:grid-cols-[1.1fr_.9fr]">
 
         {/* Left */}
@@ -55,30 +54,22 @@ export default function AlbumInfo({
             once: true,
           }}
           transition={{
-            duration: .8,
+            duration: 0.8,
           }}
         >
-
           <p className="text-xs uppercase tracking-[8px] text-[#c8a86b]">
-
             The Story
-
           </p>
 
           <h2 className="mt-6 text-5xl font-extralight leading-tight text-[#222]">
-
             {album.title}
-
           </h2>
 
           <p className="mt-10 text-lg leading-9 text-gray-500">
-
             {album.description}
-
           </p>
 
           <p className="mt-8 leading-9 text-gray-500">
-
             Mỗi bộ ảnh cưới đều là một hành trình riêng,
             nơi cảm xúc chân thật được lưu giữ bằng ánh sáng,
             bố cục và những khoảnh khắc tự nhiên nhất.
@@ -86,7 +77,6 @@ export default function AlbumInfo({
             Chúng tôi không chỉ chụp ảnh,
             mà còn kể lại câu chuyện tình yêu của hai bạn
             theo cách tinh tế và vượt thời gian.
-
           </p>
 
           <motion.a
@@ -108,11 +98,9 @@ export default function AlbumInfo({
               hover:bg-[#b89555]
             "
           >
-
             Đặt lịch tư vấn
 
             <ArrowRight size={18} />
-
           </motion.a>
 
         </motion.div>
@@ -132,7 +120,7 @@ export default function AlbumInfo({
             once: true,
           }}
           transition={{
-            duration: .8,
+            duration: 0.8,
           }}
           className="
             rounded-[36px]
@@ -142,15 +130,12 @@ export default function AlbumInfo({
             p-10
           "
         >
-
           <div className="space-y-10">
 
             {stats(album).map((item) => {
-
               const Icon = item.icon;
 
               return (
-
                 <div
                   key={item.label}
                   className="
@@ -164,7 +149,6 @@ export default function AlbumInfo({
                     last:pb-0
                   "
                 >
-
                   <div className="flex items-center gap-4">
 
                     <div
@@ -178,40 +162,30 @@ export default function AlbumInfo({
                         bg-[#c8a86b]/10
                       "
                     >
-
                       <Icon
                         size={22}
                         className="text-[#c8a86b]"
                       />
-
                     </div>
 
                     <span className="uppercase tracking-[3px] text-gray-500">
-
                       {item.label}
-
                     </span>
 
                   </div>
 
                   <span className="text-4xl font-extralight text-[#222]">
-
                     {item.value}
-
                   </span>
 
                 </div>
-
               );
-
             })}
 
           </div>
-
         </motion.div>
 
       </div>
-
     </section>
   );
 }

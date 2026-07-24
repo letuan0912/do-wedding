@@ -1,11 +1,11 @@
 import { notFound } from "next/navigation";
 
-import { albums } from "@/data/albums";
+import { connectDB } from "@/lib/mongodb";
+import Album from "@/models/Album";
 
 import AlbumHero from "@/components/album/AlbumHero";
 import AlbumInfo from "@/components/album/AlbumInfo";
 import AlbumGallery from "@/components/album/AlbumGallery";
-import WeddingFilm from "@/components/album/WeddingFilm";
 import RelatedAlbums from "@/components/album/RelatedAlbums";
 import CTA from "@/components/home/CTA";
 
@@ -20,9 +20,14 @@ export default async function AlbumDetailPage({
 }: Props) {
   const { slug } = await params;
 
-  const album = albums.find(
-    (item) => item.slug === slug
-  );
+await connectDB();
+
+const album = await Album.findOne({
+  slug,
+  isPublished: true,
+})
+  .lean()
+  .exec();
 
   if (!album) {
     notFound();
@@ -35,11 +40,6 @@ export default async function AlbumDetailPage({
       <AlbumInfo album={album} />
 
       <AlbumGallery album={album} />
-
-      <WeddingFilm
-        video={album.video}
-        cover={album.cover}
-      />
 
       <RelatedAlbums album={album} />
 

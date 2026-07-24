@@ -1,17 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { albums } from "@/data/albums";
-// Nếu alias @ đang lỗi thì đổi thành:
-// import { albums } from "../../../data/albums";
+import type { Album } from "@/types/album";
 
 import FeaturedImage from "./FeaturedImage";
 import FeaturedContent from "./FeaturedContent";
 import FeaturedControls from "./FeaturedControls";
 
 export default function FeaturedCollection() {
+  const [albums, setAlbums] = useState<Album[]>([]);
   const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const fetchAlbums = async () => {
+      try {
+        const res = await fetch("/api/album");
+
+        const data = await res.json();
+
+        if (data.success) {
+          setAlbums(
+            data.data.filter(
+              (item: Album) =>
+                item.featured &&
+                item.isPublished
+            )
+          );
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchAlbums();
+  }, []);
 
   const album = albums[current];
 
@@ -26,6 +49,10 @@ export default function FeaturedCollection() {
       prev === 0 ? albums.length - 1 : prev - 1
     );
   };
+
+  if (!album) {
+    return null;
+  }
 
   return (
     <section className="bg-[#faf8f5] py-24">
@@ -59,18 +86,13 @@ export default function FeaturedCollection() {
             bg-white
             p-8
             shadow-[0_35px_100px_rgba(0,0,0,.06)]
-
             lg:p-10
           "
         >
 
           <div className="grid items-center gap-12 lg:grid-cols-[1.15fr_.85fr]">
 
-            {/* Left */}
-
             <FeaturedImage album={album} />
-
-            {/* Right */}
 
             <div className="flex h-full flex-col justify-between">
 

@@ -5,13 +5,23 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { motion } from "framer-motion";
 
-import type { Album } from "@/data/albums";
+type Album = {
+  _id: string;
+  title: string;
+  slug: string;
+  description: string;
+  category: string;
+  cover: string;
+  images: string[];
+};
 
 interface Props {
   album: Album;
 }
 
-export default function AlbumCard({ album }: Props) {
+export default function AlbumCard({
+  album,
+}: Props) {
   return (
     <motion.div
       initial={{
@@ -47,14 +57,12 @@ export default function AlbumCard({ album }: Props) {
             hover:shadow-[0_35px_100px_rgba(0,0,0,.12)]
           "
         >
-          {/* Image */}
-
           <div className="relative h-[640px] overflow-hidden">
-
             <Image
               src={album.cover}
               alt={album.title}
               fill
+              sizes="(max-width:768px)100vw,(max-width:1280px)50vw,33vw"
               className="
                 object-cover
                 transition-transform
@@ -63,11 +71,7 @@ export default function AlbumCard({ album }: Props) {
               "
             />
 
-            {/* Overlay */}
-
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition duration-500 group-hover:from-black/90" />
-
-            {/* Category */}
 
             <div
               className="
@@ -90,10 +94,7 @@ export default function AlbumCard({ album }: Props) {
               {album.category}
             </div>
 
-            {/* Bottom */}
-
             <div className="absolute bottom-0 left-0 right-0 p-8">
-
               <p className="text-xs uppercase tracking-[4px] text-white/70">
                 DO WEDDING
               </p>
@@ -125,17 +126,14 @@ export default function AlbumCard({ album }: Props) {
               </p>
 
               <div className="mt-8 flex items-center justify-between">
-
                 <div>
-
                   <p className="text-3xl font-light text-white">
-                    {album.images.length}
+                    {album.images?.length ?? 0}
                   </p>
 
                   <p className="mt-1 text-xs uppercase tracking-[3px] text-white/60">
                     Photos
                   </p>
-
                 </div>
 
                 <div
@@ -159,13 +157,9 @@ export default function AlbumCard({ album }: Props) {
                     className="text-white"
                   />
                 </div>
-
               </div>
-
             </div>
-
           </div>
-
         </div>
       </Link>
     </motion.div>

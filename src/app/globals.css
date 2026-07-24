@@ -81,7 +81,7 @@ body {
 }
 
 @media (pointer: fine) {
-  body.luxury-cursor * {
+  .luxury-cursor * {
     cursor: none;
   }
 }

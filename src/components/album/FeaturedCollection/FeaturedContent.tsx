@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
-import type { Album } from "@/data/albums";
+import type { Album } from "@/types/album";
 
 interface Props {
   album: Album;
@@ -15,9 +15,8 @@ export default function FeaturedContent({
 }: Props) {
   return (
     <AnimatePresence mode="wait">
-
       <motion.div
-        key={album.id}
+        key={album._id}
         initial={{
           opacity: 0,
           y: 30,
@@ -52,32 +51,28 @@ export default function FeaturedContent({
           {album.description}
         </p>
 
-        {/* Info */}
+        {/* Stats */}
 
         <div className="mt-10 flex items-center gap-12">
 
           <div>
-
             <h3 className="text-4xl font-light text-[#222]">
-              {album.images.length}
+              {album.images?.length ?? 0}
             </h3>
 
             <p className="mt-1 text-xs uppercase tracking-[4px] text-gray-400">
               Photos
             </p>
-
           </div>
 
           <div>
-
             <h3 className="text-4xl font-light text-[#222]">
-              2026
+              4K
             </h3>
 
             <p className="mt-1 text-xs uppercase tracking-[4px] text-gray-400">
-              Collection
+              Quality
             </p>
-
           </div>
 
         </div>
@@ -109,11 +104,8 @@ export default function FeaturedContent({
             size={18}
             className="transition group-hover:translate-x-1"
           />
-
         </Link>
-
       </motion.div>
-
     </AnimatePresence>
   );
 }

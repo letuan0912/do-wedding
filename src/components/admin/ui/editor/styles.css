@@ -1,0 +1,358 @@
+.tiptap {
+  min-height: 350px;
+  padding: 8px;
+  outline: none;
+  color: #111827;
+  font-size: 16px;
+  line-height: 1.9;
+  word-break: break-word;
+}
+
+.tiptap > * + * {
+  margin-top: 1rem;
+}
+
+/* ===========================
+   Heading
+=========================== */
+
+.tiptap h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin: 2rem 0 1rem;
+  color: #111827;
+}
+
+.tiptap h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 1.8rem 0 .9rem;
+  color: #111827;
+}
+
+.tiptap h3 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 1.5rem 0 .8rem;
+  color: #111827;
+}
+
+/* ===========================
+   Paragraph
+=========================== */
+
+.tiptap p {
+  margin: .9rem 0;
+}
+
+/* ===========================
+   Text
+=========================== */
+
+.tiptap strong {
+  font-weight: 700;
+}
+
+.tiptap em {
+  font-style: italic;
+}
+
+.tiptap u {
+  text-decoration: underline;
+}
+
+.tiptap s {
+  text-decoration: line-through;
+}
+
+.tiptap mark {
+  background: #fde68a;
+  color: inherit;
+  border-radius: 4px;
+  padding: 2px 4px;
+}
+
+/* ===========================
+   List
+=========================== */
+
+.tiptap ul,
+.tiptap ol {
+  padding-left: 1.8rem;
+  margin: 1rem 0;
+}
+
+.tiptap li {
+  margin: .45rem 0;
+}
+
+.tiptap li p {
+  margin: 0;
+}
+
+/* ===========================
+   Blockquote
+=========================== */
+
+.tiptap blockquote {
+  border-left: 5px solid #2563eb;
+  background: #eff6ff;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 1.5rem 0;
+  color: #374151;
+  font-style: italic;
+}
+
+/* ===========================
+   Inline Code
+=========================== */
+
+.tiptap code {
+  background: #f3f4f6;
+  color: #dc2626;
+  padding: 3px 7px;
+  border-radius: 6px;
+  font-size: .9rem;
+  font-family:
+    SFMono-Regular,
+    Consolas,
+    Monaco,
+    monospace;
+}
+
+/* ===========================
+   Code Block
+=========================== */
+
+.tiptap pre {
+  background: #0f172a;
+  color: #f8fafc;
+  border-radius: 14px;
+  padding: 18px;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.tiptap pre code {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  font-size: .95rem;
+}
+
+.tiptap pre::-webkit-scrollbar {
+  height: 8px;
+}
+
+.tiptap pre::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,.2);
+  border-radius: 999px;
+}
+
+/* ===========================
+   Image
+=========================== */
+
+.tiptap img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 24px auto;
+  border-radius: 14px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.08);
+  transition: .25s;
+}
+
+.tiptap img:hover {
+  transform: scale(1.01);
+}
+
+/* ===========================
+   Link
+=========================== */
+
+.tiptap a {
+  color: #2563eb;
+  text-decoration: underline;
+  transition: .2s;
+}
+
+.tiptap a:hover {
+  color: #1d4ed8;
+}
+
+/* ===========================
+   Horizontal Rule
+=========================== */
+
+.tiptap hr {
+  border: none;
+  border-top: 2px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+/* ===========================
+   Placeholder
+=========================== */
+
+.tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  color: #9ca3af;
+  pointer-events: none;
+  float: left;
+  height: 0;
+}
+
+/* ===========================
+   Focus
+=========================== */
+
+.tiptap:focus {
+  outline: none;
+}
+
+/* ===========================
+   Selection
+=========================== */
+
+.tiptap ::selection {
+  background: rgba(37,99,235,.18);
+}
+
+/* ===========================
+   Table
+=========================== */
+
+.tiptap table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.tiptap th {
+  background: #f9fafb;
+  font-weight: 700;
+}
+
+.tiptap td,
+.tiptap th {
+  border: 1px solid #d1d5db;
+  padding: 12px;
+  text-align: left;
+}
+
+.tiptap tr:nth-child(even) {
+  background: #fafafa;
+}
+
+/* ===========================
+   Responsive
+=========================== */
+
+@media (max-width:768px){
+
+.tiptap{
+font-size:15px;
+line-height:1.8;
+}
+
+.tiptap h1{
+font-size:1.9rem;
+}
+
+.tiptap h2{
+font-size:1.5rem;
+}
+
+.tiptap h3{
+font-size:1.25rem;
+}
+
+.tiptap pre{
+padding:14px;
+}
+
+}
+ 
+/* Image Resize */
+
+.image-resizer {
+  display:inline-block;
+  position:relative;
+}
+
+.image-resizer img{
+  max-width:100%;
+  border-radius:14px;
+}
+
+.resize-trigger{
+  width:12px;
+  height:12px;
+  background:#2563eb;
+  border-radius:999px;
+}
+
+/* ===== Table ===== */
+
+.ProseMirror table {
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
+  margin: 1.25rem 0;
+  overflow: hidden;
+}
+
+.ProseMirror table td,
+.ProseMirror table th {
+  border: 1px solid #d1d5db;
+  padding: 10px 12px;
+  vertical-align: top;
+  position: relative;
+}
+
+.ProseMirror table th {
+  background: #f3f4f6;
+  font-weight: 600;
+}
+
+.ProseMirror table tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.ProseMirror table .selectedCell {
+  background: rgba(59, 130, 246, 0.12);
+}
+
+.ProseMirror .column-resize-handle {
+  position: absolute;
+  right: -2px;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #3b82f6;
+  pointer-events: none;
+}
+
+.ProseMirror .tableWrapper {
+  overflow-x: auto;
+}
+
+/* Youtube */
+
+.ProseMirror iframe {
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
+  border-radius: 12px;
+  border: none;
+  margin: 20px auto;
+  display: block;
+}

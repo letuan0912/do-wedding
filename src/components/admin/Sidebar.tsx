@@ -5,40 +5,46 @@ import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
   Images,
-  Briefcase,
   Mail,
+  Briefcase,
+  ReceiptText,
+  CalendarDays,
   Settings,
-  DollarSign,
 } from "lucide-react";
 
 const menus = [
   {
-    name: "Dashboard",
+    title: "Dashboard",
     href: "/admin",
     icon: LayoutDashboard,
-},
+  },
   {
-    name: "Liên hệ",
+    title: "Liên hệ",
     href: "/admin/contact",
     icon: Mail,
   },
   {
-    name: "Album",
+    title: "Album",
     href: "/admin/album",
     icon: Images,
   },
   {
-    name: "Dịch vụ",
+    title: "Dịch vụ",
     href: "/admin/service",
     icon: Briefcase,
   },
   {
-    name: "Bảng giá",
-    href: "/admin/price",
-    icon: DollarSign,
+    title: "Bảng giá",
+    href: "/admin/pricing",
+    icon: ReceiptText,
   },
   {
-    name: "Cài đặt",
+    title: "Booking",
+    href: "/admin/booking",
+    icon: CalendarDays,
+  },
+  {
+    title: "Cài đặt",
     href: "/admin/settings",
     icon: Settings,
   },
@@ -48,36 +54,43 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-72 min-h-screen bg-[#181818] text-white p-8">
+    <aside className="w-72 border-r border-[#ececec] bg-white">
+      <div className="border-b border-[#ececec] px-8 py-8">
+        <h2 className="text-2xl font-light text-[#222]">
+          DO WEDDING
+        </h2>
 
-      <h1 className="text-3xl font-light mb-12">
-        DO WEDDING
-      </h1>
+        <p className="mt-1 text-xs uppercase tracking-[4px] text-[#c8a86b]">
+          CMS ADMIN
+        </p>
+      </div>
 
-      <div className="space-y-2">
-
+      <nav className="space-y-2 p-5">
         {menus.map((item) => {
           const Icon = item.icon;
+
+          const active =
+            pathname === item.href ||
+            (item.href !== "/admin" &&
+              pathname.startsWith(item.href));
 
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-4 rounded-xl p-4 transition ${
-                pathname === item.href
-                  ? "bg-[#c8a86b]"
-                  : "hover:bg-white/10"
+              className={`flex items-center gap-3 rounded-2xl px-5 py-4 transition ${
+                active
+                  ? "bg-[#c8a86b] text-white shadow-lg"
+                  : "text-gray-600 hover:bg-[#faf8f4]"
               }`}
             >
               <Icon size={20} />
 
-              {item.name}
+              <span>{item.title}</span>
             </Link>
           );
         })}
-
-      </div>
-
+      </nav>
     </aside>
   );
 }
