@@ -3,8 +3,7 @@
 import { CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 
-import type { Service } from "@/data/services";
-
+import type { Service } from "@/types/service";
 interface Props {
   service: Service;
 }

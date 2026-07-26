@@ -13,10 +13,19 @@ export default function FormCard({
 }: FormCardProps) {
   return (
     <div
-      className={`rounded-2xl border border-gray-200 bg-white p-6 shadow-sm ${className}`}
+      className={`
+rounded-2xl
+border
+border-gray-200
+bg-white
+p-8
+shadow-sm
+transition-all
+${className}
+`}
     >
       {title && (
-        <h2 className="mb-5 text-lg font-semibold">
+        <h2 className="mb-8 text-2xl font-bold tracking-tight">
           {title}
         </h2>
       )}

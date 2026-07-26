@@ -3,26 +3,44 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
-import Input from "@/components/admin/ui/Input";
-import Textarea from "@/components/admin/ui/Textarea";
-import Switch from "@/components/admin/ui/Switch";
 import Button from "@/components/admin/ui/Button";
-import ImageUpload from "@/components/admin/ui/ImageUpload";
-import GalleryUpload from "@/components/admin/ui/GalleryUpload";
-import { RichEditor } from "@/components/admin/ui/editor";
+
+import BasicInfoSection from "./sections/BasicInfoSection";
+import ImageSeoSection from "./sections/ImageSeoSection";
+import SettingSection from "./sections/SettingSection";
+
+import GallerySection from "./sections/GallerySection";
+import IncludesSection from "./sections/IncludesSection";
 
 import type { Service } from "@/types/service";
 
 type Props = {
   service?: Service | null;
+  onClose: () => void;
   onSuccess: () => void;
 };
 
+const slugify = (text: string) =>
+  text
+    .toLowerCase()
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
 export default function ServiceForm({
   service,
+  onClose,
   onSuccess,
 }: Props) {
+  const isEdit = !!service?._id;
+
   const [loading, setLoading] =
+    useState(false);
+
+  const [saving, setSaving] =
     useState(false);
 
   const [title, setTitle] =
@@ -31,23 +49,52 @@ export default function ServiceForm({
   const [slug, setSlug] =
     useState("");
 
-  const [price, setPrice] =
-    useState("");
+  const [subtitle, setSubtitle] = useState("");
 
-  const [sortOrder, setSortOrder] =
-    useState(0);
+const [price, setPrice] = useState("");
 
-  const [description, setDescription] =
-    useState("");
+const [story, setStory] = useState("");
+
+  const [
+    shortDescription,
+    setShortDescription,
+  ] = useState("");
 
   const [content, setContent] =
     useState("");
 
-  const [cover, setCover] =
+  const [thumbnail, setThumbnail] =
     useState("");
 
-  const [gallery, setGallery] =
-    useState<string[]>([]);
+  const [cover, setCover] = useState("");
+
+const [gallery, setGallery] = useState<string[]>([]);
+
+const [includes, setIncludes] = useState<string[]>([]);
+
+  const [banner, setBanner] =
+    useState("");
+
+  const [
+    mobileBanner,
+    setMobileBanner,
+  ] = useState("");
+
+  const [icon, setIcon] =
+    useState("");
+
+  const [seoTitle, setSeoTitle] =
+    useState("");
+
+  const [
+    seoDescription,
+    setSeoDescription,
+  ] = useState("");
+
+  const [
+    seoKeywords,
+    setSeoKeywords,
+  ] = useState<string[]>([]);
 
   const [featured, setFeatured] =
     useState(false);
@@ -55,176 +102,137 @@ export default function ServiceForm({
   const [published, setPublished] =
     useState(true);
 
+  const [sortOrder, setSortOrder] =
+    useState(0);
+
   useEffect(() => {
-    if (service) {
-      setTitle(service.title);
+    if (!service) return;
 
-      setSlug(service.slug);
+    setTitle(service.title);
+    setSlug(service.slug);
 
-      setPrice(
-        service.price.toString()
-      );
+    setSubtitle(service.subtitle ?? "");
 
-      setSortOrder(
-        service.sortOrder ?? 0
-      );
+setPrice(service.price ?? "");
 
-      setDescription(
-        service.description ?? ""
-      );
+setStory(service.story ?? "");
 
-      setContent(
-        service.content ?? ""
-      );
+    setShortDescription(
+      service.shortDescription
+    );
 
-      setCover(
-        service.cover ?? ""
-      );
+    setContent(service.content);
 
-      setGallery(
-        service.gallery ?? []
-      );
+    setThumbnail(service.thumbnail);
 
-      setFeatured(
-        service.featured
-      );
+    setCover(service.cover ?? "");
 
-      setPublished(
-        service.published
-      );
-    } else {
-      setTitle("");
+setGallery(service.gallery ?? []);
 
-      setSlug("");
+setIncludes(service.includes ?? []);
 
-      setPrice("");
+    setBanner(service.banner);
 
-      setSortOrder(0);
+    setMobileBanner(
+      service.mobileBanner
+    );
 
-      setDescription("");
+    setIcon(service.icon);
 
-      setContent("");
+    setSeoTitle(service.seoTitle);
 
-      setCover("");
+    setSeoDescription(
+      service.seoDescription
+    );
 
-      setGallery([]);
+    setSeoKeywords(
+      service.seoKeywords ?? []
+    );
 
-      setFeatured(false);
+    setFeatured(service.featured);
 
-      setPublished(true);
-    }
+    setPublished(service.published);
+
+    setSortOrder(service.sortOrder);
   }, [service]);
 
   useEffect(() => {
-    if (service) return;
-
-    setSlug(
-      title
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")
-        .replace(/[^\w-]+/g, "")
-    );
-  }, [title, service]);
-
-  const handleSubmit = async (
-    e: React.FormEvent
+    if (!isEdit) {
+      setSlug(slugify(title));
+    }
+  }, [title, isEdit]);
+    const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
 
-    if (!title.trim()) {
-      toast.error(
-        "Vui lòng nhập tên dịch vụ"
-      );
-      return;
-    }
-
-    if (title.trim().length < 3) {
-      toast.error(
-        "Tên dịch vụ phải từ 3 ký tự"
-      );
-      return;
-    }
-
-    if (!slug.trim()) {
-      toast.error(
-        "Vui lòng nhập slug"
-      );
-      return;
-    }
-
-    if (
-      !/^[a-z0-9-]+$/.test(slug)
-    ) {
-      toast.error(
-        "Slug chỉ gồm chữ thường, số và dấu -"
-      );
-      return;
-    }
-
-    if (
-      Number(price) < 0
-    ) {
-      toast.error(
-        "Giá không hợp lệ"
-      );
-      return;
-    }
-
     try {
-      setLoading(true);
+      setSaving(true);
 
-      const payload = {
+      const body = {
+        subtitle,
+
+price,
+
+story,
         title,
         slug,
-        description,
+        shortDescription,
         content,
+
+        thumbnail,
         cover,
-        gallery,
-        sortOrder,
-        price:
-          Number(price) || 0,
+
+gallery,
+
+includes,
+        banner,
+        mobileBanner,
+        icon,
+
+        seoTitle,
+        seoDescription,
+        seoKeywords,
+
         featured,
         published,
+        sortOrder,
       };
 
-      const url = service
-        ? `/api/admin/service/${service._id}`
-        : "/api/admin/service";
-
-      const method = service
-        ? "PATCH"
-        : "POST";
-
-      const res = await fetch(url, {
-        method,
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
-        body: JSON.stringify(
-          payload
-        ),
-      });
+      const res = await fetch(
+        isEdit
+          ? `/api/admin/service/${service!._id}`
+          : "/api/admin/service",
+        {
+          method: isEdit ? "PUT" : "POST",
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
 
       const data =
         await res.json();
 
-      if (!data.success) {
+      if (!res.ok || !data.success) {
         toast.error(
           data.message ??
-            "Lưu thất bại"
+            "Lưu dịch vụ thất bại"
         );
         return;
       }
 
       toast.success(
-        service
-          ? "Đã cập nhật dịch vụ"
-          : "Đã thêm dịch vụ"
+        isEdit
+          ? "Cập nhật dịch vụ thành công"
+          : "Thêm dịch vụ thành công"
       );
 
       onSuccess();
+
+      onClose();
     } catch (error) {
       console.error(error);
 
@@ -232,132 +240,118 @@ export default function ServiceForm({
         "Có lỗi xảy ra"
       );
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
-  return (
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-20">
+        Đang tải...
+      </div>
+    );
+  }
+
+return (
   <form
     onSubmit={handleSubmit}
-    className="space-y-8"
+    className="flex h-full flex-col"
   >
-    {/* Cover */}
+    {/* Nội dung */}
+    <div className="flex-1 overflow-y-auto">
+      <div className="grid grid-cols-12 gap-8">
+        {/* Cột trái */}
+        <div className="col-span-8">
+          <BasicInfoSection
+  title={title}
+  setTitle={setTitle}
 
-    <ImageUpload
-      label="Ảnh đại diện"
-      value={cover}
-      onChange={setCover}
-    />
+  slug={slug}
+  setSlug={setSlug}
 
-    {/* Basic Info */}
+  subtitle={subtitle}
+  setSubtitle={setSubtitle}
 
-    <div className="grid gap-6 md:grid-cols-2">
-      <Input
-        label="Tên dịch vụ"
-        placeholder="Ví dụ: Studio Package"
-        value={title}
-        onChange={(e) =>
-          setTitle(e.target.value)
-        }
-        required
-      />
+  price={price}
+  setPrice={setPrice}
 
-      <Input
-        label="Slug"
-        placeholder="studio-package"
-        value={slug}
-        onChange={(e) =>
-          setSlug(e.target.value)
-        }
-        required
-      />
+  shortDescription={shortDescription}
+  setShortDescription={setShortDescription}
 
-      <Input
-        label="Giá"
-        type="number"
-        placeholder="5900000"
-        value={price}
-        onChange={(e) =>
-          setPrice(e.target.value)
-        }
-      />
+  story={story}
+  setStory={setStory}
 
-      <Input
-        label="Thứ tự hiển thị"
-        type="number"
-        placeholder="0"
-        value={sortOrder.toString()}
-        onChange={(e) =>
-          setSortOrder(
-            Number(e.target.value)
-          )
-        }
-      />
-    </div>
+  content={content}
+  setContent={setContent}
+/>
+        </div>
 
-    {/* Description */}
+        {/* Cột phải */}
+        <div className="col-span-4 space-y-8">
+          <ImageSeoSection
+  thumbnail={thumbnail}
+  setThumbnail={setThumbnail}
 
-    <Textarea
-      label="Mô tả ngắn"
-      placeholder="Mô tả ngắn hiển thị ở danh sách dịch vụ..."
-      rows={4}
-      value={description}
-      onChange={(e) =>
-        setDescription(e.target.value)
-      }
-    />
+  cover={cover}
+  setCover={setCover}
 
-    {/* Gallery */}
+  banner={banner}
+  setBanner={setBanner}
 
-    <GalleryUpload
-      value={gallery}
-      onChange={setGallery}
-    />
+  mobileBanner={mobileBanner}
+  setMobileBanner={setMobileBanner}
 
-    {/* Rich Editor */}
+  icon={icon}
+  setIcon={setIcon}
 
-    <div className="space-y-2">
-      <label className="text-sm font-medium text-gray-700">
-        Nội dung chi tiết
-      </label>
+  seoTitle={seoTitle}
+  setSeoTitle={setSeoTitle}
 
-      <RichEditor
-        value={content}
-        onChange={setContent}
-        placeholder="Nhập nội dung chi tiết dịch vụ..."
-      />
-    </div>
+  seoDescription={seoDescription}
+  setSeoDescription={setSeoDescription}
 
-    {/* Settings */}
+  seoKeywords={seoKeywords}
+  setSeoKeywords={setSeoKeywords}
+/>
 
-    <div className="grid gap-4 md:grid-cols-2">
-      <Switch
-        checked={featured}
-        onChange={setFeatured}
-        label="Dịch vụ nổi bật"
-        description="Hiển thị tại khu vực nổi bật."
-      />
+          <GallerySection
+  gallery={gallery}
+  setGallery={setGallery}
+/>
 
-      <Switch
-        checked={published}
-        onChange={setPublished}
-        label="Xuất bản"
-        description="Hiển thị trên website."
-      />
+<IncludesSection
+  includes={includes}
+  setIncludes={setIncludes}
+/>
+
+          <SettingSection
+            featured={featured}
+            setFeatured={setFeatured}
+            published={published}
+            setPublished={setPublished}
+            sortOrder={sortOrder}
+            setSortOrder={setSortOrder}
+          />
+        </div>
+      </div>
     </div>
 
     {/* Footer */}
+    <div className="border-t bg-white pt-6 flex justify-end gap-4">
+      <Button
+        type="button"
+        variant="secondary"
+        onClick={onClose}
+      >
+        Hủy
+      </Button>
 
-    <div className="sticky bottom-0 -mx-8 border-t border-gray-200 bg-white px-8 py-5">
-      <div className="flex justify-end">
-        <Button
-          type="submit"
-          loading={loading}
-        >
-          {service
-            ? "Cập nhật dịch vụ"
-            : "Thêm dịch vụ"}
-        </Button>
-      </div>
+      <Button
+        type="submit"
+        loading={saving}
+      >
+        {isEdit ? "Cập nhật" : "Thêm dịch vụ"}
+      </Button>
     </div>
   </form>
 );

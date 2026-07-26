@@ -18,6 +18,20 @@ type Props = {
   onSuccess: () => void;
 };
 
+const generateSlug = (text: string) => {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/đ/g, "d")
+    .replace(/Đ/g, "D")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+};
+
 export default function PackageForm({
   packageItem,
   onSuccess,
@@ -28,6 +42,8 @@ export default function PackageForm({
 
   const [title, setTitle] = useState("");
   const [slug, setSlug] = useState("");
+  const [slugEdited, setSlugEdited] = useState(false);
+
   const [serviceId, setServiceId] = useState("");
   const [description, setDescription] = useState("");
 
@@ -40,24 +56,18 @@ export default function PackageForm({
   const [duration, setDuration] = useState("");
   const [deliveryTime, setDeliveryTime] = useState("");
 
-  const [features, setFeatures] =
-    useState<string[]>([""]);
+  const [features, setFeatures] = useState<string[]>([""]);
 
-  const [featured, setFeatured] =
-    useState(false);
+  const [featured, setFeatured] = useState(false);
 
-  const [published, setPublished] =
-    useState(true);
+  const [published, setPublished] = useState(true);
 
-  const [sortOrder, setSortOrder] =
-    useState(0);
+  const [sortOrder, setSortOrder] = useState(0);
 
   useEffect(() => {
     const loadServices = async () => {
       try {
-        const res = await fetch(
-          "/api/admin/service"
-        );
+        const res = await fetch("/api/admin/service");
 
         const data = await res.json();
 
@@ -71,26 +81,25 @@ export default function PackageForm({
   }, []);
 
   useEffect(() => {
-    if (!packageItem) return;
+    if (!packageItem) {
+      setSlugEdited(false);
+      return;
+    }
 
     setTitle(packageItem.title);
 
     setSlug(packageItem.slug);
+    setSlugEdited(false);
 
     setServiceId(
-      typeof packageItem.serviceId ===
-        "string"
+      typeof packageItem.serviceId === "string"
         ? packageItem.serviceId
         : packageItem.serviceId._id
     );
 
-    setDescription(
-      packageItem.description
-    );
+    setDescription(packageItem.description);
 
-    setPrice(
-      String(packageItem.price)
-    );
+    setPrice(String(packageItem.price));
 
     setSalePrice(
       packageItem.salePrice
@@ -104,17 +113,11 @@ export default function PackageForm({
         : ""
     );
 
-    setBadge(
-      packageItem.badge ?? ""
-    );
+    setBadge(packageItem.badge ?? "");
 
-    setDuration(
-      packageItem.duration ?? ""
-    );
+    setDuration(packageItem.duration ?? "");
 
-    setDeliveryTime(
-      packageItem.deliveryTime ?? ""
-    );
+    setDeliveryTime(packageItem.deliveryTime ?? "");
 
     setFeatures(
       packageItem.features.length
@@ -122,31 +125,20 @@ export default function PackageForm({
         : [""]
     );
 
-    setFeatured(
-      packageItem.featured
-    );
+    setFeatured(packageItem.featured);
 
-    setPublished(
-      packageItem.published
-    );
+    setPublished(packageItem.published);
 
-    setSortOrder(
-      packageItem.sortOrder
-    );
+    setSortOrder(packageItem.sortOrder);
   }, [packageItem]);
 
   useEffect(() => {
-    if (packageItem) return;
+    if (slugEdited) return;
 
-    setSlug(
-      title
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, "-")
-        .replace(/[^\w-]+/g, "")
-    );
-  }, [title, packageItem]);
-    const addFeature = () => {
+    setSlug(generateSlug(title));
+  }, [title, slugEdited]);
+
+  const addFeature = () => {
     setFeatures((prev) => [...prev, ""]);
   };
 
@@ -172,12 +164,10 @@ export default function PackageForm({
     );
   };
 
-  const serviceOptions = services.map(
-    (item) => ({
-      label: item.title,
-      value: item._id,
-    })
-  );
+  const serviceOptions = services.map((item) => ({
+    label: item.title,
+    value: item._id,
+  }));
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -190,9 +180,7 @@ export default function PackageForm({
     }
 
     if (!serviceId) {
-      toast.error(
-        "Vui lòng chọn dịch vụ."
-      );
+      toast.error("Vui lòng chọn dịch vụ.");
       return;
     }
 
@@ -224,17 +212,14 @@ export default function PackageForm({
 
         duration: duration.trim(),
 
-        deliveryTime:
-          deliveryTime.trim(),
+        deliveryTime: deliveryTime.trim(),
 
         features: features
           .map((item) => item.trim())
           .filter(Boolean),
 
         featured,
-
         published,
-
         sortOrder,
       };
 
@@ -242,15 +227,12 @@ export default function PackageForm({
         ? `/api/admin/package/${packageItem._id}`
         : "/api/admin/package";
 
-      const method = packageItem
-        ? "PATCH"
-        : "POST";
+      const method = packageItem ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method,
         headers: {
-          "Content-Type":
-            "application/json",
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(payload),
       });
@@ -259,8 +241,7 @@ export default function PackageForm({
 
       if (!res.ok || !data.success) {
         throw new Error(
-          data.message ??
-            "Có lỗi xảy ra."
+          data.message ?? "Có lỗi xảy ra."
         );
       }
 
@@ -273,71 +254,73 @@ export default function PackageForm({
       onSuccess();
     } catch (error: any) {
       toast.error(
-        error.message ??
-          "Có lỗi xảy ra."
+        error.message ?? "Có lỗi xảy ra."
       );
     } finally {
       setLoading(false);
     }
   };
-    return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-6"
-    >
-      <BasicInfoSection
-        title={title}
-        setTitle={setTitle}
-        slug={slug}
-        setSlug={setSlug}
-        serviceId={serviceId}
-        setServiceId={setServiceId}
-        badge={badge}
-        setBadge={setBadge}
-        description={description}
-        setDescription={setDescription}
-        serviceOptions={serviceOptions}
-      />
+  return (
+  <form
+    onSubmit={handleSubmit}
+    className="space-y-6"
+  >
+    <BasicInfoSection
+      title={title}
+      setTitle={setTitle}
+      slug={slug}
+      setSlug={(value) => {
+        setSlug(value);
+        setSlugEdited(true);
+      }}
+      serviceId={serviceId}
+      setServiceId={setServiceId}
+      badge={badge}
+      setBadge={setBadge}
+      description={description}
+      setDescription={setDescription}
+      serviceOptions={serviceOptions}
+    />
 
-      <PricingSection
-        price={price}
-        setPrice={setPrice}
-        salePrice={salePrice}
-        setSalePrice={setSalePrice}
-        deposit={deposit}
-        setDeposit={setDeposit}
-        duration={duration}
-        setDuration={setDuration}
-        deliveryTime={deliveryTime}
-        setDeliveryTime={setDeliveryTime}
-      />
+    <PricingSection
+      price={price}
+      setPrice={setPrice}
+      salePrice={salePrice}
+      setSalePrice={setSalePrice}
+      deposit={deposit}
+      setDeposit={setDeposit}
+      duration={duration}
+      setDuration={setDuration}
+      deliveryTime={deliveryTime}
+      setDeliveryTime={setDeliveryTime}
+    />
 
-      <FeatureSection
-        features={features}
-        addFeature={addFeature}
-        removeFeature={removeFeature}
-        updateFeature={updateFeature}
-      />
+    <FeatureSection
+      features={features}
+      addFeature={addFeature}
+      removeFeature={removeFeature}
+      updateFeature={updateFeature}
+    />
 
-      <SettingSection
-        published={published}
-        setPublished={setPublished}
-        featured={featured}
-        setFeatured={setFeatured}
-        sortOrder={sortOrder}
-        setSortOrder={setSortOrder}
-      />
+    <SettingSection
+      published={published}
+      setPublished={setPublished}
+      featured={featured}
+      setFeatured={setFeatured}
+      sortOrder={sortOrder}
+      setSortOrder={setSortOrder}
+    />
 
-      <div className="flex justify-end gap-3 border-t pt-6">
-        <Button
-          type="submit"
-          loading={loading}
-        >
-          {packageItem
-            ? "Cập nhật gói"
-            : "Thêm gói"}
-        </Button>
-      </div>
-    </form>
-  );
+    <div className="flex justify-end gap-3 border-t pt-6">
+      <Button
+        type="submit"
+        loading={loading}
+      >
+        {packageItem
+          ? "Cập nhật gói"
+          : "Thêm gói"}
+      </Button>
+    </div>
+  </form>
+);
 }

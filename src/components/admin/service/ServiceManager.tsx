@@ -1,153 +1,125 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
-import Card from "@/components/admin/ui/Card";
 import Button from "@/components/admin/ui/Button";
+import EmptyState from "@/components/admin/ui/EmptyState";
 import Loading from "@/components/admin/ui/Loading";
 import PageHeader from "@/components/admin/ui/PageHeader";
 
-import ServiceToolbar from "./ServiceToolbar";
-import ServiceTable from "./ServiceTable";
 import ServiceModal from "./ServiceModal";
+import ServiceTable from "./ServiceTable";
 
 import type { Service } from "@/types/service";
 
 export default function ServiceManager() {
-  const [services, setServices] = useState<Service[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [services, setServices] =
+    useState<Service[]>([]);
 
-  const [search, setSearch] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [loading, setLoading] =
+    useState(true);
 
-  const [openModal, setOpenModal] = useState(false);
-  const [editingService, setEditingService] =
+  const [open, setOpen] =
+    useState(false);
+
+  const [selected, setSelected] =
     useState<Service | null>(null);
 
-  const loadServices = async () => {
+  const loadData = async () => {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/admin/service");
+      const res = await fetch(
+        "/api/admin/service",
+        {
+          cache: "no-store",
+        }
+      );
 
-      const data = await res.json();
+      const result =
+        await res.json();
 
-      if (!data.success) {
-        throw new Error(data.message);
+      if (!res.ok) {
+        toast.error(
+          result.message ??
+            "Không thể tải dữ liệu."
+        );
+        return;
       }
 
-      setServices(data.data);
+      setServices(
+        result.data ?? []
+      );
     } catch (error) {
-      console.error("Load Service:", error);
+      console.error(error);
+
+      toast.error(
+        "Có lỗi xảy ra."
+      );
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadServices();
+    loadData();
   }, []);
 
-  const filteredServices = useMemo(() => {
-    const keyword = search.toLowerCase();
-
-    return services.filter((service) => {
-      const matchSearch =
-        service.title.toLowerCase().includes(keyword) ||
-        service.slug.toLowerCase().includes(keyword);
-
-      const matchFilter =
-        filter === "all" ||
-        (filter === "published" && service.published) ||
-        (filter === "draft" && !service.published);
-
-      return matchSearch && matchFilter;
-    });
-  }, [services, search, filter]);
-
   const handleCreate = () => {
-    setEditingService(null);
-    setOpenModal(true);
+    setSelected(null);
+    setOpen(true);
   };
 
-  const handleEdit = (service: Service) => {
-    setEditingService(service);
-    setOpenModal(true);
+  const handleEdit = (
+    item: Service
+  ) => {
+    setSelected(item);
+    setOpen(true);
   };
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setEditingService(null);
-  };
-
-  const handleSuccess = async () => {
-    await loadServices();
-    handleCloseModal();
-  };
-
-  const handleDelete = async (id: string) => {
-    if (!window.confirm("Bạn có chắc muốn xóa dịch vụ?")) {
-      return;
-    }
-
-    try {
-      const res = await fetch(`/api/admin/service/${id}`, {
-        method: "DELETE",
-      });
-
-      const data = await res.json();
-
-      if (!data.success) {
-        throw new Error(data.message);
-      }
-
-      setServices((prev) =>
-        prev.filter((item) => item._id !== id)
-      );
-    } catch (error) {
-      console.error("Delete Service:", error);
-    }
+  const handleClose = () => {
+    setOpen(false);
+    setSelected(null);
   };
 
   return (
     <>
-      <div className="space-y-8">
-        <PageHeader
-          title="Quản lý Dịch vụ"
-          description="Quản lý các gói dịch vụ của DO WEDDING."
+      <PageHeader
+        title="Dịch vụ"
+        description="Quản lý các dịch vụ của studio."
+        action={
+          <Button onClick={handleCreate}>
+            Thêm dịch vụ
+          </Button>
+        }
+      />
+
+      {loading ? (
+        <Loading />
+      ) : services.length === 0 ? (
+        <EmptyState
+          title="Chưa có dịch vụ"
+          description="Hãy tạo dịch vụ đầu tiên."
           action={
             <Button onClick={handleCreate}>
               Thêm dịch vụ
             </Button>
           }
         />
-
-        <Card padding="lg">
-          <ServiceToolbar
-            search={search}
-            setSearch={setSearch}
-            filter={filter}
-            setFilter={setFilter}
-          />
-        </Card>
-
-        {loading ? (
-          <Loading text="Đang tải danh sách dịch vụ..." />
-        ) : (
-          <ServiceTable
-            services={filteredServices}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-            onRefresh={loadServices}
-          />
-        )}
-      </div>
+      ) : (
+        <ServiceTable
+          data={services}
+          onEdit={handleEdit}
+          onRefresh={loadData}
+        />
+      )}
 
       <ServiceModal
-        open={openModal}
-        service={editingService}
-        onClose={handleCloseModal}
-        onSuccess={handleSuccess}
+        open={open}
+        service={selected}
+        onClose={handleClose}
+        onSuccess={loadData}
       />
     </>
   );

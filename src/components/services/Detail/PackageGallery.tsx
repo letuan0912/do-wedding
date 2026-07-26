@@ -3,8 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-import type { Service } from "@/data/services";
-
+import type { Service } from "@/types/service";
 interface Props {
   service: Service;
 }

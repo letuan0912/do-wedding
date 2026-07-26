@@ -43,7 +43,7 @@ export default function RichEditor({
     editorProps: {
       attributes: {
         class:
-          "prose prose-lg max-w-none min-h-[220px] focus:outline-none",
+          "prose prose-gray dark:prose-invert max-w-none min-h-[420px] px-1 focus:outline-none",
       },
     },
   });
@@ -206,11 +206,18 @@ export default function RichEditor({
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
-      <Toolbar editor={editor} />
+      <div className="sticky top-0 z-20 border-b bg-white">
+  <Toolbar editor={editor} />
+</div>
       <EditorContent
-        editor={editor}
-        className="min-h-[220px] p-5"
-      />
+  editor={editor}
+  className="
+    min-h-[420px]
+    max-h-[650px]
+    overflow-y-auto
+    p-6
+  "
+/>
     </div>
   );
 }

@@ -47,7 +47,7 @@ export default function Services() {
                 </h3>
 
                 <p className="mt-4 leading-7 text-gray-500">
-                  {service.description}
+                  {service.shortDescription}
                 </p>
 
                 <div className="mt-8">

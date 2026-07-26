@@ -14,15 +14,19 @@ import {
   ArrowRight,
 } from "lucide-react";
 
-import {
-  services,
-} from "@/data/services";
+import type { Service } from "@/types/service";
 
 import {
   useRef,
 } from "react";
 
-export default function LuxuryShowcase() {
+type Props = {
+  services: Service[];
+};
+
+export default function LuxuryShowcase({
+  services,
+}: Props) {
 
   return (
 
@@ -192,7 +196,7 @@ export default function LuxuryShowcase() {
 
           <LuxuryCard
 
-            key={service.id}
+            key={service._id}
 
             service={service}
 
@@ -210,12 +214,9 @@ export default function LuxuryShowcase() {
 
 }
 
-type CardProps={
-
-  service:(typeof services)[number];
-
-  index:number;
-
+type CardProps = {
+  service: Service;
+  index: number;
 };
 
 function LuxuryCard({
@@ -356,43 +357,46 @@ function LuxuryCard({
     >
               {/* Huge Number */}
 
-      <div
-        className="
-          pointer-events-none
-          absolute
-          -top-20
-          left-0
-          z-0
-          select-none
-          text-[220px]
-          font-thin
-          leading-none
-          text-[#ece5dc]
-          xl:text-[280px]
-        "
-      >
+  <div
+  className={`
+    pointer-events-none
+    absolute
+    -top-20
+    z-20
+    select-none
+    text-[220px]
+    font-thin
+    leading-none
+    text-[#ece5dc]
+    xl:text-[280px]
+    ${
+      index % 2 === 0
+        ? "right-0 text-right"
+        : "left-0"
+    }
+  `}
+>
         0{index + 1}
       </div>
 
-      <div
-        className={`
-          relative
-          z-10
-          grid
-          items-center
-          gap-14
-          lg:grid-cols-12
-          ${
-            index % 2 === 1
-              ? "lg:[&>*:first-child]:order-2"
-              : ""
-          }
-        `}
-      >
+<div
+  className="
+    relative
+    z-30
+    grid
+    items-center
+    gap-14
+    lg:grid-cols-12
+  "
+>
 
         {/* IMAGE */}
 
-        <div className="relative lg:col-span-8">
+        <div
+  className={`relative lg:col-span-8 ${
+    index % 2 === 1 ? "lg:order-2" : ""
+  }`}
+>
 
           {/* Glow */}
 
@@ -548,7 +552,7 @@ function LuxuryCard({
                   text-gray-600
                 "
               >
-                {service.description}
+                {service.shortDescription}
               </p>
 
             </motion.div>
@@ -558,7 +562,11 @@ function LuxuryCard({
         </div>
                 {/* CONTENT */}
 
-        <div className="relative lg:col-span-4">
+<div
+  className={`relative lg:col-span-4 ${
+    index % 2 === 1 ? "lg:order-1" : ""
+  }`}
+>
 
           {/* Vertical Gold Line */}
 

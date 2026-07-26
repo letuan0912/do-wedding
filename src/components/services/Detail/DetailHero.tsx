@@ -5,8 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowRight, ChevronRight } from "lucide-react";
 
-import type { Service } from "@/data/services";
-
+import type { Service } from "@/types/service";
 interface Props {
   service: Service;
 }
@@ -19,13 +18,15 @@ export default function DetailHero({
 
       {/* Cover */}
 
-      <Image
-        src={service.cover}
-        alt={service.title}
-        fill
-        priority
-        className="object-cover"
-      />
+      {service.cover && (
+  <Image
+    src={service.cover}
+    alt={service.title}
+    fill
+    priority
+    className="object-cover"
+  />
+)}
 
       {/* Overlay */}
 
@@ -169,7 +170,7 @@ export default function DetailHero({
             text-white/75
           "
         >
-          {service.description}
+          {service.shortDescription}
         </motion.p>
 
         {/* Bottom */}

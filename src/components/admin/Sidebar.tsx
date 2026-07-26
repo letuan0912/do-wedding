@@ -7,8 +7,10 @@ import {
   Images,
   Mail,
   Briefcase,
-  ReceiptText,
+  Package,
   CalendarDays,
+  Image,
+  Star,
   Settings,
 } from "lucide-react";
 
@@ -34,14 +36,24 @@ const menus = [
     icon: Briefcase,
   },
   {
-    title: "Bảng giá",
-    href: "/admin/pricing",
-    icon: ReceiptText,
+    title: "Gói dịch vụ",
+    href: "/admin/package",
+    icon: Package,
   },
   {
     title: "Booking",
     href: "/admin/booking",
     icon: CalendarDays,
+  },
+  {
+    title: "Banner",
+    href: "/admin/banner",
+    icon: Image,
+  },
+  {
+    title: "Đánh giá",
+    href: "/admin/review",
+    icon: Star,
   },
   {
     title: "Cài đặt",
@@ -78,15 +90,17 @@ export default function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 rounded-2xl px-5 py-4 transition ${
+              className={`flex items-center gap-3 rounded-2xl px-5 py-4 transition-all duration-200 ${
                 active
                   ? "bg-[#c8a86b] text-white shadow-lg"
-                  : "text-gray-600 hover:bg-[#faf8f4]"
+                  : "text-gray-600 hover:bg-[#faf8f4] hover:text-[#c8a86b]"
               }`}
             >
               <Icon size={20} />
 
-              <span>{item.title}</span>
+              <span className="font-medium">
+                {item.title}
+              </span>
             </Link>
           );
         })}

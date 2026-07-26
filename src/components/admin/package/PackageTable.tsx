@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
-import DataTable from "@/components/admin/ui/DataTable";
 import Badge from "@/components/admin/ui/Badge";
 import Button from "@/components/admin/ui/Button";
 import ConfirmDialog from "@/components/admin/ui/ConfirmDialog";
+import DataTable from "@/components/admin/ui/DataTable";
 
 import type { Package } from "@/types/package";
 
@@ -16,6 +16,11 @@ type Props = {
   onRefresh: () => void;
 };
 
+const money = (value: number) =>
+  new Intl.NumberFormat("vi-VN").format(
+    value
+  );
+
 export default function PackageTable({
   data,
   onEdit,
@@ -24,55 +29,56 @@ export default function PackageTable({
   const [deleting, setDeleting] =
     useState<Package | null>(null);
 
-  const handleDelete = async () => {
-    if (!deleting) return;
+  const handleDelete =
+    async () => {
+      if (!deleting) return;
 
-    try {
-      const res = await fetch(
-        `/api/admin/package/${deleting._id}`,
-        {
-          method: "DELETE",
-        }
-      );
-
-      const result =
-        await res.json();
-
-      if (!result.success) {
-        toast.error(
-          result.message ??
-            "Xóa thất bại"
+      try {
+        const res = await fetch(
+          `/api/admin/package/${deleting._id}`,
+          {
+            method: "DELETE",
+          }
         );
-        return;
+
+        const result =
+          await res.json();
+
+        if (!res.ok) {
+          toast.error(
+            result.message ??
+              "Xóa thất bại"
+          );
+          return;
+        }
+
+        toast.success(
+          "Đã xóa gói dịch vụ."
+        );
+
+        setDeleting(null);
+
+        onRefresh();
+      } catch (error) {
+        console.error(error);
+
+        toast.error(
+          "Có lỗi xảy ra."
+        );
       }
-
-      toast.success(
-        "Đã xóa gói"
-      );
-
-      setDeleting(null);
-
-      onRefresh();
-    } catch (err) {
-      console.error(err);
-
-      toast.error(
-        "Có lỗi xảy ra"
-      );
-    }
-  };
+    };
 
   return (
     <>
       <DataTable
-        columns={[
-          "Tên gói",
-          "Dịch vụ",
-          "Giá",
-          "Trạng thái",
-          "Thao tác",
-        ]}
-      >
+  headers={[
+    "Tên gói",
+    "Dịch vụ",
+    "Giá",
+    "Trạng thái",
+    "Thao tác",
+  ]}
+>
         {data.map((item) => (
           <tr key={item._id}>
             <td>
@@ -81,42 +87,50 @@ export default function PackageTable({
                   {item.title}
                 </div>
 
-                {item.badge && (
-                  <Badge>
-                    {item.badge}
-                  </Badge>
-                )}
+                <div className="flex gap-2 flex-wrap">
+                  {item.badge && (
+                    <Badge>
+                      {item.badge}
+                    </Badge>
+                  )}
+
+                  {item.featured && (
+                    <Badge variant="warning">
+                      Nổi bật
+                    </Badge>
+                  )}
+                </div>
               </div>
             </td>
 
             <td>
-              {typeof item.serviceId ===
-              "object"
+              {item.serviceId &&
+              typeof item.serviceId ===
+                "object" &&
+              "title" in item.serviceId
                 ? item.serviceId.title
                 : "-"}
             </td>
 
             <td>
-              <div className="space-y-1">
-                {item.salePrice ? (
-                  <>
-                    <div className="text-red-600 font-semibold">
-                      {item.salePrice.toLocaleString()}
-                      đ
-                    </div>
-
-                    <div className="text-sm line-through text-gray-400">
-                      {item.price.toLocaleString()}
-                      đ
-                    </div>
-                  </>
-                ) : (
-                  <div>
-                    {item.price.toLocaleString()}
+              {item.salePrice > 0 ? (
+                <div>
+                  <div className="font-semibold text-red-600">
+                    {money(
+                      item.salePrice
+                    )}{" "}
                     đ
                   </div>
-                )}
-              </div>
+
+                  <div className="text-sm text-gray-400 line-through">
+                    {money(item.price)} đ
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  {money(item.price)} đ
+                </div>
+              )}
             </td>
 
             <td>

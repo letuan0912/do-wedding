@@ -1,8 +1,4 @@
-import mongoose, {
-  Schema,
-  models,
-  model,
-} from "mongoose";
+import { Schema, models, model } from "mongoose";
 
 const PackageSchema = new Schema(
   {
@@ -17,6 +13,7 @@ const PackageSchema = new Schema(
       required: true,
       unique: true,
       trim: true,
+      lowercase: true,
     },
 
     serviceId: {
@@ -25,45 +22,47 @@ const PackageSchema = new Schema(
       required: true,
     },
 
-    category: {
-      type: String,
-      default: "",
-    },
-
     description: {
       type: String,
       default: "",
+      trim: true,
     },
 
     price: {
       type: Number,
       required: true,
       default: 0,
+      min: 0,
     },
 
     salePrice: {
       type: Number,
       default: 0,
+      min: 0,
     },
 
     deposit: {
       type: Number,
       default: 0,
+      min: 0,
     },
 
     badge: {
       type: String,
       default: "",
+      trim: true,
     },
 
     duration: {
       type: String,
       default: "",
+      trim: true,
     },
 
     deliveryTime: {
       type: String,
       default: "",
+      trim: true,
     },
 
     features: {
@@ -84,6 +83,7 @@ const PackageSchema = new Schema(
     sortOrder: {
       type: Number,
       default: 0,
+      min: 0,
     },
   },
   {

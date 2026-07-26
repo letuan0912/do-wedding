@@ -7,26 +7,45 @@ import LuxuryFilm from "@/components/services/Hero/LuxuryFilm";
 import Testimonials from "@/components/services/Social/Testimonials";
 import InstagramGallery from "@/components/services/Social/InstagramGallery";
 
-export default function DichVuPage() {
+import type { Service } from "@/types/service";
+
+async function getServices(): Promise<Service[]> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_APP_URL}/api/service`,
+    {
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    return [];
+  }
+
+  const data = await res.json();
+
+  return data.data;
+}
+
+export default async function DichVuPage() {
+  const services = await getServices();
+
   return (
     <main className="overflow-hidden bg-white">
+      <Hero />
 
-    <Hero />
+      <LuxuryStats />
 
-    <LuxuryStats />
+      <LuxuryFilm />
 
-    <LuxuryFilm />
+      <LuxuryShowcase services={services} />
 
-    <LuxuryShowcase />
+      <LuxuryTimeline />
 
-    <LuxuryTimeline />
+      <Testimonials />
 
-    <Testimonials />
+      <InstagramGallery />
 
-    <InstagramGallery />
-
-    <CTA />
-
+      <CTA />
     </main>
   );
 }

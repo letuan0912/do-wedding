@@ -13,7 +13,8 @@ export default function ImageUpload({
   value,
   onChange,
 }: Props) {
-  const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef =
+    useRef<HTMLInputElement>(null);
 
   const [uploading, setUploading] =
     useState(false);
@@ -40,24 +41,113 @@ export default function ImageUpload({
       if (data.success) {
         onChange(data.url);
       }
+    } catch (error) {
+      console.error(error);
     } finally {
       setUploading(false);
     }
   };
 
   return (
-    <div className="space-y-4">
-      <div className="relative h-56 overflow-hidden rounded-xl border bg-gray-100">
+    <div className="group space-y-4">
+      <div
+        className="
+          relative
+          h-56
+          overflow-hidden
+          rounded-2xl
+          border
+          border-gray-200
+          bg-gray-50
+          transition-all
+          duration-300
+          hover:shadow-lg
+        "
+      >
         {value ? (
-          <Image
-            src={value}
-            alt=""
-            fill
-            className="object-cover"
-          />
+          <>
+            <Image
+              src={value}
+              alt=""
+              fill
+              className="
+                object-cover
+                transition-transform
+                duration-300
+                group-hover:scale-105
+              "
+            />
+
+            <div
+              className="
+                absolute
+                inset-0
+                flex
+                items-end
+                justify-center
+                bg-gradient-to-t
+                from-black/70
+                via-black/10
+                to-transparent
+                opacity-0
+                transition
+                duration-300
+                group-hover:opacity-100
+                pb-4
+              "
+            >
+              <Button
+                type="button"
+                variant="secondary"
+                onClick={() =>
+                  inputRef.current?.click()
+                }
+              >
+                Đổi ảnh
+              </Button>
+            </div>
+          </>
         ) : (
-          <div className="flex h-full items-center justify-center text-gray-400">
-            Chưa có ảnh
+          <div
+            className="
+              flex
+              h-full
+              flex-col
+              items-center
+              justify-center
+              gap-3
+              text-gray-400
+            "
+          >
+            <div className="text-5xl">
+              🖼️
+            </div>
+
+            <div className="text-sm font-medium">
+              Chưa có ảnh
+            </div>
+
+            <div className="text-xs">
+              JPG • PNG • WEBP
+            </div>
+          </div>
+        )}
+
+        {uploading && (
+          <div
+            className="
+              absolute
+              inset-0
+              flex
+              items-center
+              justify-center
+              bg-white/70
+              backdrop-blur-sm
+            "
+          >
+            <div className="rounded-xl bg-white px-5 py-3 shadow">
+              Đang tải ảnh...
+            </div>
           </div>
         )}
       </div>
@@ -80,11 +170,14 @@ export default function ImageUpload({
       <Button
         type="button"
         loading={uploading}
+        className="w-full"
         onClick={() =>
           inputRef.current?.click()
         }
       >
-        Chọn ảnh
+        {value
+          ? "Thay ảnh"
+          : "Tải ảnh"}
       </Button>
     </div>
   );

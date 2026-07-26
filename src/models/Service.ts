@@ -1,4 +1,4 @@
-import mongoose, { Schema, models, model } from "mongoose";
+import { Schema, models, model } from "mongoose";
 
 const ServiceSchema = new Schema(
   {
@@ -12,10 +12,25 @@ const ServiceSchema = new Schema(
       type: String,
       required: true,
       unique: true,
+      lowercase: true,
       trim: true,
     },
 
-    description: {
+    // ========= CONTENT =========
+
+    subtitle: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    shortDescription: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    story: {
       type: String,
       default: "",
     },
@@ -26,11 +41,29 @@ const ServiceSchema = new Schema(
     },
 
     price: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    // ========= IMAGES =========
+
+    thumbnail: {
+      type: String,
+      default: "",
     },
 
     cover: {
+      type: String,
+      default: "",
+    },
+
+    banner: {
+      type: String,
+      default: "",
+    },
+
+    mobileBanner: {
       type: String,
       default: "",
     },
@@ -39,6 +72,39 @@ const ServiceSchema = new Schema(
       type: [String],
       default: [],
     },
+
+    icon: {
+      type: String,
+      default: "",
+    },
+
+    // ========= FEATURES =========
+
+    includes: {
+      type: [String],
+      default: [],
+    },
+
+    // ========= SEO =========
+
+    seoTitle: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    seoDescription: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    seoKeywords: {
+      type: [String],
+      default: [],
+    },
+
+    // ========= SETTINGS =========
 
     featured: {
       type: Boolean,
@@ -53,12 +119,13 @@ const ServiceSchema = new Schema(
     sortOrder: {
       type: Number,
       default: 0,
+      min: 0,
     },
   },
   {
     timestamps: true,
-    versionKey: false,
   }
 );
 
-export default models.Service || model("Service", ServiceSchema);
+export default models.Service ||
+  model("Service", ServiceSchema);
