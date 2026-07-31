@@ -3,28 +3,41 @@
 import { useEffect, useRef, useState } from "react";
 import Container from "@/components/ui/Container";
 
-const stats = [
-  {
-    value: 500,
-    suffix: "+",
-    label: "Cặp đôi",
-  },
-  {
-    value: 8,
-    suffix: "+",
-    label: "Năm kinh nghiệm",
-  },
-  {
-    value: 1200,
-    suffix: "+",
-    label: "Album hoàn thành",
-  },
-  {
-    value: 100,
-    suffix: "%",
-    label: "Khách hài lòng",
-  },
-];
+interface CounterData {
+  counter1Number: number;
+  counter1Suffix: string;
+  counter1Label: string;
+
+  counter2Number: number;
+  counter2Suffix: string;
+  counter2Label: string;
+
+  counter3Number: number;
+  counter3Suffix: string;
+  counter3Label: string;
+
+  counter4Number: number;
+  counter4Suffix: string;
+  counter4Label: string;
+}
+
+const initialCounter: CounterData = {
+  counter1Number: 500,
+  counter1Suffix: "+",
+  counter1Label: "Cặp đôi",
+
+  counter2Number: 8,
+  counter2Suffix: "+",
+  counter2Label: "Năm kinh nghiệm",
+
+  counter3Number: 1200,
+  counter3Suffix: "+",
+  counter3Label: "Album hoàn thành",
+
+  counter4Number: 100,
+  counter4Suffix: "%",
+  counter4Label: "Khách hài lòng",
+};
 
 function CountUp({
   end,
@@ -42,9 +55,7 @@ function CountUp({
       started.current = true;
 
       let start = 0;
-
       const duration = 1500;
-
       const increment = end / (duration / 16);
 
       const timer = setInterval(() => {
@@ -68,37 +79,73 @@ function CountUp({
 }
 
 export default function Counter() {
+  const [data, setData] =
+    useState<CounterData>(initialCounter);
+
+  useEffect(() => {
+    async function loadCounter() {
+      try {
+        const res = await fetch("/api/homepage", {
+          cache: "no-store",
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          setData({
+            ...initialCounter,
+            ...result.data,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadCounter();
+  }, []);
+
+  const stats = [
+    {
+      value: data.counter1Number,
+      suffix: data.counter1Suffix,
+      label: data.counter1Label,
+    },
+    {
+      value: data.counter2Number,
+      suffix: data.counter2Suffix,
+      label: data.counter2Label,
+    },
+    {
+      value: data.counter3Number,
+      suffix: data.counter3Suffix,
+      label: data.counter3Label,
+    },
+    {
+      value: data.counter4Number,
+      suffix: data.counter4Suffix,
+      label: data.counter4Label,
+    },
+  ];
+
   return (
-    <section className="py-28 bg-[#c8a86b] text-white">
-
+    <section className="bg-[#c8a86b] py-28 text-white">
       <Container>
-
-        <div className="grid md:grid-cols-4 gap-12 text-center">
-
+        <div className="grid gap-12 text-center md:grid-cols-4">
           {stats.map((item) => (
-
             <div key={item.label}>
-
               <h2 className="text-6xl font-extralight">
-
                 <CountUp end={item.value} />
-
                 {item.suffix}
-
               </h2>
 
-              <p className="uppercase tracking-[4px] mt-5 text-sm text-white/80">
+              <p className="mt-5 text-sm uppercase tracking-[4px] text-white/80">
                 {item.label}
               </p>
-
             </div>
-
           ))}
-
         </div>
-
       </Container>
-
     </section>
   );
 }

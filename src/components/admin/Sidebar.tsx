@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   LayoutDashboard,
+  Home,
   Images,
   Mail,
   Briefcase,
@@ -14,51 +15,79 @@ import {
   Settings,
 } from "lucide-react";
 
-const menus = [
+const menuGroups = [
   {
-    title: "Dashboard",
-    href: "/admin",
-    icon: LayoutDashboard,
+    title: "TỔNG QUAN",
+    items: [
+      {
+        title: "Dashboard",
+        href: "/admin",
+        icon: LayoutDashboard,
+      },
+    ],
   },
+
   {
-    title: "Liên hệ",
-    href: "/admin/contact",
-    icon: Mail,
+    title: "NỘI DUNG WEBSITE",
+    items: [
+      {
+        title: "Trang chủ",
+        href: "/admin/homepage",
+        icon: Home,
+      },
+      {
+        title: "Album",
+        href: "/admin/album",
+        icon: Images,
+      },
+      {
+        title: "Dịch vụ",
+        href: "/admin/service",
+        icon: Briefcase,
+      },
+      {
+        title: "Liên hệ",
+        href: "/admin/contact",
+        icon: Mail,
+      },
+    ],
   },
+
   {
-    title: "Album",
-    href: "/admin/album",
-    icon: Images,
+    title: "QUẢN LÝ",
+    items: [
+      {
+        title: "Gói dịch vụ",
+        href: "/admin/package",
+        icon: Package,
+      },
+      {
+        title: "Booking",
+        href: "/admin/booking",
+        icon: CalendarDays,
+      },
+      {
+        title: "Đánh giá",
+        href: "/admin/review",
+        icon: Star,
+      },
+    ],
   },
+
   {
-    title: "Dịch vụ",
-    href: "/admin/service",
-    icon: Briefcase,
-  },
-  {
-    title: "Gói dịch vụ",
-    href: "/admin/package",
-    icon: Package,
-  },
-  {
-    title: "Booking",
-    href: "/admin/booking",
-    icon: CalendarDays,
-  },
-  {
-    title: "Banner",
-    href: "/admin/banner",
-    icon: Image,
-  },
-  {
-    title: "Đánh giá",
-    href: "/admin/review",
-    icon: Star,
-  },
-  {
-    title: "Cài đặt",
-    href: "/admin/settings",
-    icon: Settings,
+    title: "HỆ THỐNG",
+    items: [
+      {
+        title: "Banner",
+        href: "/admin/banner",
+        icon: Image,
+      },
+      {
+        title: "Cài đặt",
+        href: "/admin/settings",
+        icon: Settings,
+      },
+    ],
   },
 ];
 
@@ -77,33 +106,43 @@ export default function Sidebar() {
         </p>
       </div>
 
-      <nav className="space-y-2 p-5">
-        {menus.map((item) => {
-          const Icon = item.icon;
+      <nav className="p-5 space-y-7">
+        {menuGroups.map((group) => (
+          <div key={group.title}>
+            <p className="mb-3 px-2 text-[11px] font-semibold uppercase tracking-[3px] text-gray-400">
+              {group.title}
+            </p>
 
-          const active =
-            pathname === item.href ||
-            (item.href !== "/admin" &&
-              pathname.startsWith(item.href));
+            <div className="space-y-2">
+              {group.items.map((item) => {
+                const Icon = item.icon;
 
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 rounded-2xl px-5 py-4 transition-all duration-200 ${
-                active
-                  ? "bg-[#c8a86b] text-white shadow-lg"
-                  : "text-gray-600 hover:bg-[#faf8f4] hover:text-[#c8a86b]"
-              }`}
-            >
-              <Icon size={20} />
+                const active =
+                  pathname === item.href ||
+                  (item.href !== "/admin" &&
+                    pathname.startsWith(item.href));
 
-              <span className="font-medium">
-                {item.title}
-              </span>
-            </Link>
-          );
-        })}
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`flex items-center gap-3 rounded-2xl px-5 py-4 transition-all duration-200 ${
+                      active
+                        ? "bg-[#c8a86b] text-white shadow-lg"
+                        : "text-gray-600 hover:bg-[#faf8f4] hover:text-[#c8a86b]"
+                    }`}
+                  >
+                    <Icon size={20} />
+
+                    <span className="font-medium">
+                      {item.title}
+                    </span>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </nav>
     </aside>
   );

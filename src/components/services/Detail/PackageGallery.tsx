@@ -35,7 +35,7 @@ export default function PackageGallery({
 
         <div className="grid gap-6 md:grid-cols-2">
 
-          {service.gallery.map((image, index) => (
+          {(service.gallery || []).map((image, index) => (
 
             <motion.div
               key={image}

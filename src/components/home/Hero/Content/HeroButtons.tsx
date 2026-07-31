@@ -4,7 +4,19 @@ import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 import { motion } from "framer-motion";
 
-export default function HeroButtons() {
+interface HeroButtonsProps {
+  primaryText: string;
+  primaryLink: string;
+  secondaryText: string;
+  secondaryLink: string;
+}
+
+export default function HeroButtons({
+  primaryText,
+  primaryLink,
+  secondaryText,
+  secondaryLink,
+}: HeroButtonsProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 25 }}
@@ -24,7 +36,7 @@ export default function HeroButtons() {
         }}
       >
         <Link
-          href="/lien-he"
+          href={primaryLink || "/lien-he"}
           className="
             group
             relative
@@ -45,8 +57,6 @@ export default function HeroButtons() {
             hover:bg-[#bb995a]
           "
         >
-          {/* Luxury shimmer */}
-
           <motion.div
             animate={{
               x: ["-180%", "260%"],
@@ -71,7 +81,7 @@ export default function HeroButtons() {
           />
 
           <span className="relative z-10">
-            Đặt lịch tư vấn
+            {primaryText || "Đặt lịch tư vấn"}
           </span>
 
           <ArrowRight
@@ -89,7 +99,7 @@ export default function HeroButtons() {
 
       {/* Secondary */}
 
-      <motion.button
+      <motion.div
         whileHover={{
           y: -3,
           scale: 1.015,
@@ -97,57 +107,61 @@ export default function HeroButtons() {
         whileTap={{
           scale: 0.98,
         }}
-        className="
-          group
-          flex
-          h-14
-          items-center
-          gap-3
-          rounded-full
-          border
-          border-[#eadfc7]
-          bg-white/80
-          px-7
-          backdrop-blur-xl
-          shadow-[0_12px_30px_rgba(0,0,0,.05)]
-          transition-all
-          duration-300
-          hover:border-[#c8a86b]
-          hover:bg-white
-        "
       >
-        <div
+        <Link
+          href={secondaryLink || "#"}
           className="
+            group
             flex
-            h-9
-            w-9
+            h-14
             items-center
-            justify-center
+            gap-3
             rounded-full
-            bg-[#c8a86b]/10
-            transition
+            border
+            border-[#eadfc7]
+            bg-white/80
+            px-7
+            backdrop-blur-xl
+            shadow-[0_12px_30px_rgba(0,0,0,.05)]
+            transition-all
             duration-300
-            group-hover:bg-[#c8a86b]
+            hover:border-[#c8a86b]
+            hover:bg-white
           "
         >
-          <Play
-            size={14}
+          <div
             className="
-              ml-0.5
-              fill-[#c8a86b]
-              text-[#c8a86b]
+              flex
+              h-9
+              w-9
+              items-center
+              justify-center
+              rounded-full
+              bg-[#c8a86b]/10
               transition
               duration-300
-              group-hover:fill-white
-              group-hover:text-white
+              group-hover:bg-[#c8a86b]
             "
-          />
-        </div>
+          >
+            <Play
+              size={14}
+              className="
+                ml-0.5
+                fill-[#c8a86b]
+                text-[#c8a86b]
+                transition
+                duration-300
+                group-hover:fill-white
+                group-hover:text-white
+              "
+            />
+          </div>
 
-        <span className="font-medium text-[#222]">
-          Xem Showreel
-        </span>
-      </motion.button>
+          <span className="font-medium text-[#222]">
+            {secondaryText || "Xem Showreel"}
+          </span>
+        </Link>
+      </motion.div>
     </motion.div>
   );
 }

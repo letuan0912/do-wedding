@@ -93,7 +93,7 @@ export default function PackageInfo({
 
           <div className="mt-10 space-y-6">
 
-            {service.includes.map((item) => (
+            {(service.includes || []).map((item) => (
 
               <div
                 key={item}

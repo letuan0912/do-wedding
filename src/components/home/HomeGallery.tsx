@@ -1,47 +1,60 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Eye } from "lucide-react";
-import { PhotoProvider, PhotoView } from "react-photo-view";
+
 import FadeIn from "@/components/ui/FadeIn";
 
-const gallery = [
-  {
-    src: "/images/album/album1.jpg",
-    height: "h-[620px]",
-  },
-  {
-    src: "/images/album/album2.jpg",
-    height: "h-[420px]",
-  },
-  {
-    src: "/images/album/album3.jpg",
-    height: "h-[540px]",
-  },
-  {
-    src: "/images/album/album4.jpg",
-    height: "h-[460px]",
-  },
-  {
-    src: "/images/album/album5.jpg",
-    height: "h-[640px]",
-  },
-  {
-    src: "/images/album/album6.jpg",
-    height: "h-[420px]",
-  },
-];
+interface Album {
+  _id: string;
+  title: string;
+  slug: string;
+  cover: string;
+}
 
 export default function HomeGallery() {
+  const [albums, setAlbums] = useState<Album[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadAlbums() {
+      try {
+        const res = await fetch("/api/album?limit=6", {
+          cache: "no-store",
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          setAlbums(result.data);
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadAlbums();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="bg-white py-28">
+        <div className="text-center text-gray-500">
+          Đang tải album...
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section className="bg-white py-28">
-
-      <div className="max-w-7xl mx-auto px-8">
-
+      <div className="mx-auto max-w-7xl px-8">
         <FadeIn>
-
           <div className="text-center">
-
             <p className="uppercase tracking-[6px] text-[#c8a86b]">
               Gallery
             </p>
@@ -50,62 +63,65 @@ export default function HomeGallery() {
               ALBUM NỔI BẬT
             </h2>
 
-            <p className="mt-6 max-w-2xl mx-auto text-gray-500 leading-8">
+            <p className="mx-auto mt-6 max-w-2xl leading-8 text-gray-500">
               Những khoảnh khắc được lưu giữ theo phong cách sang trọng,
               tinh tế và đầy cảm xúc.
             </p>
-
           </div>
-
         </FadeIn>
 
-        <PhotoProvider maskOpacity={0.9}>
-
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 mt-20">
-
-            {gallery.map((item, index) => (
-
-              <FadeIn key={item.src} delay={index * 0.08}>
-
-                <PhotoView src={item.src}>
-
-                  <div className="mb-6 overflow-hidden rounded-[30px] cursor-pointer group break-inside-avoid relative">
+        {albums.length === 0 ? (
+          <div className="mt-20 text-center text-gray-500">
+            Chưa có album.
+          </div>
+        ) : (
+          <div className="mt-20 columns-1 gap-6 md:columns-2 lg:columns-3">
+            {albums.map((album, index) => (
+              <FadeIn
+                key={album._id}
+                delay={index * 0.08}
+              >
+                <Link href={`/album/${album.slug}`}>
+                  <div className="group relative mb-6 cursor-pointer overflow-hidden rounded-[30px] break-inside-avoid">
 
                     <Image
-                      src={item.src}
-                      alt=""
+                      src={album.cover}
+                      alt={album.title}
                       width={700}
                       height={900}
-                      className={`w-full ${item.height} object-cover transition duration-700 group-hover:scale-110`}
+                      className="w-full object-cover transition duration-700 group-hover:scale-110"
                     />
 
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition duration-500 flex flex-col items-center justify-center">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-all duration-500 group-hover:opacity-100">
 
-                      <Eye
-                        size={42}
-                        className="text-white"
-                      />
+                      <div className="text-center">
 
-                      <p className="mt-4 uppercase tracking-[5px] text-white">
-                        XEM ẢNH
-                      </p>
+                        <Eye
+                          size={44}
+                          className="mx-auto text-white"
+                        />
+
+                        <p className="mt-5 text-lg font-light tracking-[6px] uppercase text-white">
+                          XEM ALBUM
+                        </p>
+
+                        <div className="mx-auto mt-3 h-px w-14 bg-white/70" />
+
+                        <p className="mt-3 text-sm uppercase tracking-[4px] text-white/90">
+                          {album.title}
+                        </p>
+
+                      </div>
 
                     </div>
 
                   </div>
-
-                </PhotoView>
-
+                </Link>
               </FadeIn>
-
             ))}
-
           </div>
-
-        </PhotoProvider>
-
+        )}
       </div>
-
     </section>
   );
 }

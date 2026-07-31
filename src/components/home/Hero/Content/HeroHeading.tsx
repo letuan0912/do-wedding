@@ -2,6 +2,13 @@
 
 import { motion, type Variants } from "framer-motion";
 
+interface HeroHeadingProps {
+  title1: string;
+  highlight: string;
+  title2: string;
+  description: string;
+}
+
 const container: Variants = {
   hidden: {},
   show: {
@@ -28,7 +35,12 @@ const item: Variants = {
   },
 };
 
-export default function HeroHeading() {
+export default function HeroHeading({
+  title1,
+  highlight,
+  title2,
+  description,
+}: HeroHeadingProps) {
   return (
     <motion.div
       variants={container}
@@ -56,13 +68,16 @@ export default function HeroHeading() {
           text-[#222]
         "
       >
-        Mỗi Khoảnh Khắc
+        {title1 || "Mỗi Khoảnh Khắc"}
+
         <br />
+
         <span className="bg-gradient-to-r from-[#b99245] via-[#d8bf88] to-[#e8d3a6] bg-clip-text text-transparent">
-          Đều Là
+          {highlight || "Đều Là"}
         </span>{" "}
+
         <span className="text-[#222]">
-          Một Kiệt Tác.
+          {title2 || "Một Kiệt Tác."}
         </span>
       </motion.h1>
 
@@ -76,8 +91,8 @@ export default function HeroHeading() {
           text-[#616161]
         "
       >
-        Lưu giữ những khoảnh khắc chân thật bằng ánh sáng, cảm xúc và ngôn ngữ
-        điện ảnh để mỗi bộ ảnh trở thành một tác phẩm vượt thời gian.
+        {description ||
+          "Lưu giữ những khoảnh khắc chân thật bằng ánh sáng, cảm xúc và ngôn ngữ điện ảnh để mỗi bộ ảnh trở thành một tác phẩm vượt thời gian."}
       </motion.p>
     </motion.div>
   );

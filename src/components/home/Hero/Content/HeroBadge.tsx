@@ -3,7 +3,13 @@
 import { motion } from "framer-motion";
 import { Sparkles } from "lucide-react";
 
-export default function HeroBadge() {
+interface HeroBadgeProps {
+  badge: string;
+}
+
+export default function HeroBadge({
+  badge,
+}: HeroBadgeProps) {
   return (
     <motion.div
       initial={{
@@ -68,14 +74,11 @@ export default function HeroBadge() {
         />
 
         <div className="relative z-10 flex items-center gap-3">
-
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#c8a86b]/10">
-
             <Sparkles
               size={16}
               className="text-[#c8a86b]"
             />
-
           </div>
 
           <span
@@ -87,9 +90,8 @@ export default function HeroBadge() {
               text-[#8f6b34]
             "
           >
-            Luxury Wedding Studio
+            {badge || "Luxury Wedding Studio"}
           </span>
-
         </div>
       </motion.div>
     </motion.div>

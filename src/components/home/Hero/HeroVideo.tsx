@@ -4,24 +4,31 @@ import { motion } from "framer-motion";
 import { Play, Star, Users } from "lucide-react";
 import FloatingCard from "./FloatingCard";
 
-export default function HeroVideo() {
+interface HeroVideoProps {
+  video: string;
+  poster: string;
+}
+
+export default function HeroVideo({
+  video,
+  poster,
+}: HeroVideoProps) {
   return (
     <motion.div
-    initial={{ opacity: 0, x: 60 }}
-    animate={{ opacity: 1, x: 0 }}
-    transition={{ duration: 1 }}
-    className="
-relative
-mx-auto
-mt-8
-
-w-[320px]
-md:w-[340px]
-xl:w-[360px]
-"
-    style={{
+      initial={{ opacity: 0, x: 60 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ duration: 1 }}
+      className="
+        relative
+        mx-auto
+        mt-8
+        w-[320px]
+        md:w-[340px]
+        xl:w-[360px]
+      "
+      style={{
         perspective: "1800px",
-    }}
+      }}
     >
       {/* Floating Cards */}
 
@@ -74,14 +81,12 @@ xl:w-[360px]
           backdrop-blur-xl
         "
       >
-        {/* Video */}
-
         <motion.video
           autoPlay
           muted
           loop
           playsInline
-          poster="/images/hero-poster.jpg"
+          poster={poster || "/images/hero-poster.jpg"}
           animate={{
             scale: [1, 1.04, 1],
           }}
@@ -97,10 +102,10 @@ xl:w-[360px]
             transition
             duration-700
             group-hover:scale-[1.03]
-            "
+          "
         >
           <source
-            src="/video/hero.mp4"
+            src={video || "/video/hero.mp4"}
             type="video/mp4"
           />
         </motion.video>

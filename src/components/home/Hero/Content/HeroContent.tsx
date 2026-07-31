@@ -7,7 +7,33 @@ import HeroHeading from "./HeroHeading";
 import HeroButtons from "./HeroButtons";
 import HeroFeatures from "./HeroFeatures";
 
-export default function HeroContent() {
+export interface HeroData {
+  heroBadge: string;
+
+  heroTitle1: string;
+
+  heroHighlight: string;
+
+  heroTitle2: string;
+
+  heroDescription: string;
+
+  heroPrimaryButtonText: string;
+
+  heroPrimaryButtonLink: string;
+
+  heroSecondaryButtonText: string;
+
+  heroSecondaryButtonLink: string;
+}
+
+interface HeroContentProps {
+  hero: HeroData;
+}
+
+export default function HeroContent({
+  hero,
+}: HeroContentProps) {
   return (
     <motion.div
       initial={{
@@ -24,15 +50,26 @@ export default function HeroContent() {
         z-10
         mx-auto
         max-w-2xl
-
         lg:mx-0
       "
     >
-      <HeroBadge />
+      <HeroBadge
+        badge={hero.heroBadge}
+      />
 
-      <HeroHeading />
+      <HeroHeading
+        title1={hero.heroTitle1}
+        highlight={hero.heroHighlight}
+        title2={hero.heroTitle2}
+        description={hero.heroDescription}
+      />
 
-      <HeroButtons />
+      <HeroButtons
+        primaryText={hero.heroPrimaryButtonText}
+        primaryLink={hero.heroPrimaryButtonLink}
+        secondaryText={hero.heroSecondaryButtonText}
+        secondaryLink={hero.heroSecondaryButtonLink}
+      />
 
       <HeroFeatures />
     </motion.div>

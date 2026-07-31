@@ -11,10 +11,13 @@ export default function ContactForm() {
   const [loading, setLoading] = useState(false);
 
   const [form, setForm] = useState({
-    name: "",
+    fullName: "",
     phone: "",
     email: "",
-    message: "",
+    facebook: "",
+    weddingDate: "",
+    service: "",
+    note: "",
   });
 
   const handleChange = (
@@ -27,23 +30,13 @@ export default function ContactForm() {
   };
 
   const validate = () => {
-    if (!form.name.trim()) {
+    if (!form.fullName.trim()) {
       toast.error("Vui lòng nhập họ tên.");
       return false;
     }
 
     if (!form.phone.trim()) {
       toast.error("Vui lòng nhập số điện thoại.");
-      return false;
-    }
-
-    if (!form.email.trim()) {
-      toast.error("Vui lòng nhập email.");
-      return false;
-    }
-
-    if (!form.message.trim()) {
-      toast.error("Vui lòng nhập nội dung.");
       return false;
     }
 
@@ -56,7 +49,7 @@ export default function ContactForm() {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/contact", {
+      const res = await fetch("/api/booking", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -70,25 +63,26 @@ export default function ContactForm() {
         throw new Error(data.message || "Có lỗi xảy ra");
       }
 
-      toast.success("Đã gửi yêu cầu thành công!", {
+      toast.success("Đặt lịch thành công!", {
         description:
           "DO Wedding sẽ liên hệ với bạn trong thời gian sớm nhất.",
       });
 
       setForm({
-        name: "",
+        fullName: "",
         phone: "",
         email: "",
-        message: "",
+        facebook: "",
+        weddingDate: "",
+        service: "",
+        note: "",
       });
-
     } catch (error) {
       console.error(error);
 
       toast.error("Gửi thất bại!", {
         description: "Vui lòng thử lại sau.",
       });
-
     } finally {
       setLoading(false);
     }
@@ -121,15 +115,14 @@ export default function ContactForm() {
             </h2>
 
             <p className="mx-auto mt-6 max-w-xl text-center leading-8 text-[#777]">
-              Điền thông tin dưới đây, đội ngũ DO Wedding sẽ
-              liên hệ với bạn trong thời gian sớm nhất.
+              Điền thông tin dưới đây, đội ngũ DO Wedding sẽ liên hệ với bạn trong thời gian sớm nhất.
             </p>
 
             <div className="mt-12 space-y-7">
               <ContactInput
                 label="Họ và tên"
-                name="name"
-                value={form.name}
+                name="fullName"
+                value={form.fullName}
                 placeholder="Nguyễn Văn A"
                 onChange={handleChange}
               />
@@ -151,10 +144,36 @@ export default function ContactForm() {
                 onChange={handleChange}
               />
 
-              <ContactTextarea
-                value={form.message}
+              <ContactInput
+                label="Facebook"
+                name="facebook"
+                value={form.facebook}
+                placeholder="https://facebook.com/..."
                 onChange={handleChange}
               />
+
+              <ContactInput
+                label="Ngày dự kiến cưới"
+                name="weddingDate"
+                type="date"
+                value={form.weddingDate}
+                onChange={handleChange}
+              />
+
+              <ContactInput
+                label="Dịch vụ quan tâm"
+                name="service"
+                value={form.service}
+                placeholder="Pre Wedding, Wedding Day..."
+                onChange={handleChange}
+              />
+
+              <ContactTextarea
+  name="note"
+  value={form.note}
+  placeholder="Hãy chia sẻ thêm về ý tưởng hoặc nhu cầu của bạn..."
+  onChange={handleChange}
+/>
 
               <button
                 type="button"
@@ -187,7 +206,7 @@ export default function ContactForm() {
                   "ĐANG GỬI..."
                 ) : (
                   <>
-                    GỬI THÔNG TIN
+                    ĐẶT LỊCH TƯ VẤN
                     <Send size={18} />
                   </>
                 )}
