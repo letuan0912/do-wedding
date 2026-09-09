@@ -1,32 +1,77 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
-const stats = [
-  {
-    number: "500+",
-    label: "Cặp đôi đã đồng hành",
-  },
-  {
-    number: "8+",
-    label: "Năm kinh nghiệm",
-  },
-  {
-    number: "1200+",
-    label: "Album đã thực hiện",
-  },
-  {
-    number: "100%",
-    label: "Khách hàng hài lòng",
-  },
-];
+type HomePageData = {
+  counter1Number: number;
+  counter1Suffix: string;
+  counter1Label: string;
+
+  counter2Number: number;
+  counter2Suffix: string;
+  counter2Label: string;
+
+  counter3Number: number;
+  counter3Suffix: string;
+  counter3Label: string;
+
+  counter4Number: number;
+  counter4Suffix: string;
+  counter4Label: string;
+};
 
 export default function LuxuryStats() {
+  const [data, setData] =
+    useState<HomePageData | null>(null);
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch(
+          "/api/homepage",
+          {
+            cache: "no-store",
+          }
+        );
+
+        const result = await res.json();
+
+        if (result.success) {
+          setData(result.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    load();
+  }, []);
+
+  if (!data) return null;
+
+  const stats = [
+    {
+      number: `${data.counter1Number}${data.counter1Suffix}`,
+      label: data.counter1Label,
+    },
+    {
+      number: `${data.counter2Number}${data.counter2Suffix}`,
+      label: data.counter2Label,
+    },
+    {
+      number: `${data.counter3Number}${data.counter3Suffix}`,
+      label: data.counter3Label,
+    },
+    {
+      number: `${data.counter4Number}${data.counter4Suffix}`,
+      label: data.counter4Label,
+    },
+  ];
+
   return (
     <section className="bg-[#0b0b0b] py-28">
-
       <div className="mx-auto max-w-7xl px-6">
-
         <motion.div
           initial={{
             opacity: 0,
@@ -40,7 +85,7 @@ export default function LuxuryStats() {
             once: true,
           }}
           transition={{
-            duration: .7,
+            duration: 0.7,
           }}
           className="text-center"
         >
@@ -56,9 +101,7 @@ export default function LuxuryStats() {
         </motion.div>
 
         <div className="mt-24 grid gap-10 md:grid-cols-2 xl:grid-cols-4">
-
           {stats.map((item) => (
-
             <motion.div
               key={item.label}
               initial={{
@@ -73,7 +116,7 @@ export default function LuxuryStats() {
                 once: true,
               }}
               transition={{
-                duration: .6,
+                duration: 0.6,
               }}
               className="
                 rounded-[36px]
@@ -92,15 +135,10 @@ export default function LuxuryStats() {
               <p className="mt-6 leading-8 text-white/70">
                 {item.label}
               </p>
-
             </motion.div>
-
           ))}
-
         </div>
-
       </div>
-
     </section>
   );
 }

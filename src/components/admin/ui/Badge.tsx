@@ -5,6 +5,7 @@ import React, { ReactNode } from "react";
 type BadgeVariant =
   | "default"
   | "primary"
+  | "secondary"
   | "success"
   | "warning"
   | "danger"
@@ -27,6 +28,9 @@ const variantStyles: Record<BadgeVariant, string> = {
 
   primary:
     "bg-[#c8a86b]/15 text-[#8c6a2d] border border-[#c8a86b]/30",
+
+  secondary:
+    "bg-gray-50 text-gray-500 border border-gray-200",
 
   success:
     "bg-green-100 text-green-700 border border-green-200",

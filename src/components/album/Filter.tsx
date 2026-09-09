@@ -2,44 +2,27 @@
 
 import { motion } from "framer-motion";
 
-const categories = [
-  {
-    label: "Tất cả",
-    value: "all",
-  },
-  {
-    label: "Studio",
-    value: "studio",
-  },
-  {
-    label: "Ngoại cảnh",
-    value: "outdoor",
-  },
-  {
-    label: "Wedding Day",
-    value: "wedding",
-  },
-];
+import type { AlbumCategory } from "@/hooks/useAlbums";
 
 interface Props {
   value: string;
   onChange: (value: string) => void;
+  categories: AlbumCategory[];
 }
 
 export default function Filter({
   value,
   onChange,
+  categories,
 }: Props) {
   return (
     <section className="bg-[#faf8f5] py-10">
-
-      <div className="mx-auto flex max-w-7xl justify-center px-6">
-
+      <div className="mx-auto max-w-7xl px-6">
         <div
           className="
             flex
             flex-wrap
-            items-center
+            justify-center
             gap-3
             rounded-full
             border
@@ -49,15 +32,16 @@ export default function Filter({
             shadow-[0_15px_50px_rgba(0,0,0,.04)]
           "
         >
-
           {categories.map((item) => {
-
-            const active = value === item.value;
+            const active =
+              value === item.value;
 
             return (
               <button
                 key={item.value}
-                onClick={() => onChange(item.value)}
+                onClick={() =>
+                  onChange(item.value)
+                }
                 className="
                   relative
                   overflow-hidden
@@ -68,11 +52,10 @@ export default function Filter({
                   font-medium
                   uppercase
                   tracking-[2px]
+                  transition
                 "
               >
-
                 {active && (
-
                   <motion.div
                     layoutId="album-filter"
                     transition={{
@@ -87,34 +70,55 @@ export default function Filter({
                       bg-[#c8a86b]
                     "
                   />
-
                 )}
 
                 <span
                   className={`
                     relative
                     z-10
-                    transition
+                    flex
+                    items-center
+                    gap-2
+                    whitespace-nowrap
+                    transition-colors
 
                     ${
                       active
                         ? "text-white"
-                        : "text-gray-600 hover:text-[#222]"
+                        : "text-gray-700 hover:text-[#c8a86b]"
                     }
                   `}
                 >
                   {item.label}
-                </span>
 
+                  <span
+                    className={`
+                      flex
+                      h-5
+                      min-w-5
+                      items-center
+                      justify-center
+                      rounded-full
+                      px-1.5
+                      text-[10px]
+                      font-semibold
+                      transition
+
+                      ${
+                        active
+                          ? "bg-white/20 text-white"
+                          : "bg-gray-100 text-gray-600"
+                      }
+                    `}
+                  >
+                    {item.count}
+                  </span>
+                </span>
               </button>
             );
-
           })}
-
         </div>
-
       </div>
-
     </section>
   );
 }

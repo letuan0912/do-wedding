@@ -104,13 +104,7 @@ export default function ServiceTable({
                   /{item.slug}
                 </div>
 
-                <div className="flex gap-2 flex-wrap">
-                  {item.featured && (
-                    <Badge variant="warning">
-                      Nổi bật
-                    </Badge>
-                  )}
-                </div>
+              
               </div>
             </td>
 

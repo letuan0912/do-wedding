@@ -56,7 +56,7 @@ export async function PATCH(
 
     const body = await req.json();
 
-    // Nếu đổi tên Album thì tự tạo slug mới
+    // Đổi tên -> tạo slug mới
     if (body.title) {
       body.slug = slugify(body.title, {
         lower: true,
@@ -65,14 +65,22 @@ export async function PATCH(
       });
     }
 
-    const album = await Album.findByIdAndUpdate(
-      id,
-      body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    // Chuẩn hóa category
+    if (body.category) {
+      body.category = body.category
+        .trim()
+        .toLowerCase();
+    }
+
+    const album =
+      await Album.findByIdAndUpdate(
+        id,
+        body,
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
 
     if (!album) {
       return NextResponse.json(
@@ -114,7 +122,8 @@ export async function DELETE(
 
     const { id } = await params;
 
-    const album = await Album.findByIdAndDelete(id);
+    const album =
+      await Album.findByIdAndDelete(id);
 
     if (!album) {
       return NextResponse.json(

@@ -14,6 +14,7 @@ export async function GET() {
         // =========================
         // HERO
         // =========================
+
         heroBadge: "Nghệ Thuật Kể Chuyện Bằng Hình Ảnh",
 
         heroTitle1: "Mỗi Khoảnh Khắc",
@@ -42,6 +43,7 @@ export async function GET() {
         // =========================
         // ABOUT
         // =========================
+
         aboutSubtitle: "DO WEDDING",
 
         aboutTitle: "Mỗi Cặp Đôi Đều Có Một Câu Chuyện Riêng",
@@ -52,6 +54,48 @@ export async function GET() {
         aboutImage1: "",
 
         aboutImage2: "",
+
+        // =========================
+        // TIMELINE
+        // =========================
+
+        timelineSubtitle: "QUY TRÌNH",
+
+        timelineTitle:
+          "Đồng Hành Cùng Bạn Từ Ý Tưởng Đến Kỷ Niệm",
+
+        timelineSteps: [
+          {
+            number: "01",
+            title: "Tư Vấn",
+            description:
+              "Lắng nghe mong muốn, tư vấn concept, địa điểm và gói dịch vụ phù hợp.",
+          },
+          {
+            number: "02",
+            title: "Lên Concept",
+            description:
+              "Xây dựng ý tưởng, lựa chọn trang phục, makeup và chuẩn bị lịch trình.",
+          },
+          {
+            number: "03",
+            title: "Chụp & Quay",
+            description:
+              "Thực hiện buổi chụp với đội ngũ nhiếp ảnh và quay phim chuyên nghiệp.",
+          },
+          {
+            number: "04",
+            title: "Hậu Kỳ",
+            description:
+              "Chỉnh màu, retouch ảnh và dựng Wedding Film theo phong cách điện ảnh.",
+          },
+          {
+            number: "05",
+            title: "Bàn Giao",
+            description:
+              "Hoàn thiện album, video và bàn giao toàn bộ sản phẩm đúng tiến độ.",
+          },
+        ],
       });
 
       homepage = created.toObject();

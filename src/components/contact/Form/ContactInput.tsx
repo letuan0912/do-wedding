@@ -4,7 +4,7 @@ type Props = {
   label: string;
   name: string;
   value: string;
-  placeholder: string;
+  placeholder?: string;
   type?: string;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement>
@@ -31,7 +31,7 @@ export default function ContactInput({
         name={name}
         value={value}
         onChange={onChange}
-        placeholder={placeholder}
+        placeholder={placeholder ?? ""}
         className="
           h-14
           w-full

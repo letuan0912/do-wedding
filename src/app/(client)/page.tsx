@@ -8,10 +8,11 @@ import Testimonials from "@/components/home/Testimonials";
 import CTA from "@/components/home/CTA";
 import Contact from "@/components/home/Contact";
 
+import LuxuryTimeline from "@/components/services/Process/LuxuryTimeline";
+
 export default function Home() {
   return (
     <main className="bg-white">
-
       <Hero />
 
       <About />
@@ -19,6 +20,43 @@ export default function Home() {
       <WhyChooseUs />
 
       <Counter />
+
+      <LuxuryTimeline
+        subtitle="QUY TRÌNH"
+        title="Đồng Hành Cùng Bạn Từ Ý Tưởng Đến Kỷ Niệm"
+        steps={[
+          {
+            number: "01",
+            title: "Tư Vấn",
+            description:
+              "Lắng nghe mong muốn, tư vấn concept, địa điểm và gói dịch vụ phù hợp.",
+          },
+          {
+            number: "02",
+            title: "Lên Concept",
+            description:
+              "Xây dựng ý tưởng, lựa chọn trang phục, makeup và chuẩn bị lịch trình.",
+          },
+          {
+            number: "03",
+            title: "Chụp & Quay",
+            description:
+              "Thực hiện buổi chụp với đội ngũ nhiếp ảnh và quay phim chuyên nghiệp.",
+          },
+          {
+            number: "04",
+            title: "Hậu Kỳ",
+            description:
+              "Chỉnh màu, retouch ảnh và dựng Wedding Film theo phong cách điện ảnh.",
+          },
+          {
+            number: "05",
+            title: "Bàn Giao",
+            description:
+              "Hoàn thiện album, video và bàn giao toàn bộ sản phẩm đúng tiến độ.",
+          },
+        ]}
+      />
 
       <Services />
 
@@ -29,7 +67,6 @@ export default function Home() {
       <CTA />
 
       <Contact />
-
     </main>
   );
 }

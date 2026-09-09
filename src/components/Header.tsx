@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
+
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 
@@ -15,6 +17,8 @@ import {
   motion,
   LayoutGroup,
 } from "framer-motion";
+
+import useSettings from "@/hooks/useSettings";
 
 const menus = [
   {
@@ -38,14 +42,19 @@ const menus = [
 export default function Header() {
   const pathname = usePathname();
 
-  const [open, setOpen] = useState(false);
+  const settings = useSettings();
 
-  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] =
+    useState(false);
+
+  const [scrolled, setScrolled] =
+    useState(false);
 
   useEffect(() => {
-
     const handleScroll = () => {
-      setScrolled(window.scrollY > 40);
+      setScrolled(
+        window.scrollY > 40
+      );
     };
 
     handleScroll();
@@ -81,7 +90,7 @@ export default function Header() {
         duration: .8,
       }}
 
-      className="fixed inset-x-0 top-0 z-50 px-6 pt-6"
+      className="fixed inset-x-0 top-0 z-50 px-6 pt-4"
 
     >
 
@@ -132,20 +141,50 @@ export default function Header() {
 
             <Link
               href="/"
-              className="block"
+              className="flex items-center gap-4"
             >
+                            {settings.logo ? (
 
-              <h2 className="text-[34px] font-light tracking-[2px] text-[#222]">
+                <Image
+                  src={settings.logo}
+                  alt={
+                    settings.websiteName ||
+                    "DO WEDDING"
+                  }
+                  width={58}
+                  height={58}
+                  priority
+                  className="rounded-full object-cover"
+                />
 
-                DO WEDDING
+              ) : (
 
-              </h2>
+                <div
+                  className="
+                    flex
+                    h-[58px]
+                    w-[58px]
+                    items-center
+                    justify-center
+                    rounded-full
+                    bg-[#c8a86b]
+                    text-xl
+                    font-semibold
+                    text-white
+                  "
+                >
+                  DW
+                </div>
 
-              <p className="-mt-1 text-[11px] uppercase tracking-[5px] text-[#b69557]">
+              )}
 
-                Luxury Wedding Studio
+              <div>
 
-              </p>
+<h2 className="text-[34px] font-light tracking-[2px] leading-none text-[#222]">
+  DO WEDDING
+</h2>
+
+              </div>
 
             </Link>
 
@@ -156,7 +195,8 @@ export default function Header() {
           <LayoutGroup>
 
             <nav className="hidden items-center gap-12 lg:flex">
-                            {menus.map((item) => (
+
+              {menus.map((item) => (
 
                 <Link
                   key={item.href}
@@ -177,17 +217,13 @@ export default function Header() {
                   {pathname === item.href && (
 
                     <motion.span
-
                       layoutId="navbar"
-
                       className="absolute -bottom-2 left-0 h-[2px] w-full rounded-full bg-[#c8a86b]"
-
                       transition={{
                         type: "spring",
                         stiffness: 450,
                         damping: 35,
                       }}
-
                     />
 
                   )}
@@ -195,8 +231,6 @@ export default function Header() {
                 </Link>
 
               ))}
-
-              {/* Button */}
 
               <motion.div
 
@@ -222,11 +256,8 @@ export default function Header() {
                   Tư Vấn
 
                   <ArrowRight
-
                     size={16}
-
                     className="transition-transform duration-300 group-hover:translate-x-1"
-
                   />
 
                 </Link>
@@ -236,8 +267,7 @@ export default function Header() {
             </nav>
 
           </LayoutGroup>
-
-          {/* Mobile Button */}
+                    {/* Mobile Button */}
 
           <button
 
@@ -247,20 +277,19 @@ export default function Header() {
 
           >
 
-            {open
-
-              ? <X size={28} />
-
-              : <Menu size={28} />
-
-            }
+            {open ? (
+              <X size={28} />
+            ) : (
+              <Menu size={28} />
+            )}
 
           </button>
 
         </div>
 
       </div>
-            {/* Mobile Menu */}
+
+      {/* Mobile Menu */}
 
       <AnimatePresence>
 
@@ -293,6 +322,61 @@ export default function Header() {
             className="mx-5 mt-4 rounded-[32px] border border-white/50 bg-white/90 p-8 shadow-[0_30px_80px_rgba(0,0,0,.12)] backdrop-blur-2xl lg:hidden"
 
           >
+
+            <div className="mb-8 flex items-center gap-4">
+
+              {settings.logo ? (
+
+                <Image
+                  src={settings.logo}
+                  alt={
+                    settings.websiteName ||
+                    "DO WEDDING"
+                  }
+                  width={52}
+                  height={52}
+                  className="rounded-full object-cover"
+                />
+
+              ) : (
+
+                <div
+                  className="
+                    flex
+                    h-[52px]
+                    w-[52px]
+                    items-center
+                    justify-center
+                    rounded-full
+                    bg-[#c8a86b]
+                    text-lg
+                    font-semibold
+                    text-white
+                  "
+                >
+                  DW
+                </div>
+
+              )}
+
+              <div>
+
+                <h3 className="text-xl font-medium">
+
+                  {settings.websiteName ||
+                    "DO WEDDING"}
+
+                </h3>
+
+                <p className="text-sm text-gray-500">
+
+                  Luxury Wedding Studio
+
+                </p>
+
+              </div>
+
+            </div>
 
             {menus.map((item) => (
 

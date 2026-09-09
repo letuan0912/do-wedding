@@ -113,11 +113,11 @@ export default function PackageTable({
             </td>
 
             <td>
-              {item.salePrice > 0 ? (
+              {(item.salePrice ?? 0) > 0 ? (
                 <div>
                   <div className="font-semibold text-red-600">
                     {money(
-                      item.salePrice
+                      item.salePrice ?? 0
                     )}{" "}
                     đ
                   </div>
@@ -178,7 +178,7 @@ export default function PackageTable({
         open={!!deleting}
         title="Xóa gói dịch vụ?"
         description="Hành động này không thể hoàn tác."
-        onCancel={() =>
+        onClose={() =>
           setDeleting(null)
         }
         onConfirm={handleDelete}

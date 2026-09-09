@@ -7,6 +7,7 @@ import PageHeader from "@/components/admin/ui/PageHeader";
 import HeroSection from "./sections/HeroSection";
 import AboutSection from "./sections/AboutSection";
 import CounterSection from "./sections/CounterSection";
+import TimelineSection from "./sections/TimelineSection";
 
 import useHomepage from "@/hooks/useHomepage";
 
@@ -50,6 +51,11 @@ export default function HomepageManager() {
         />
 
         <CounterSection
+          data={form}
+          onChange={updateField}
+        />
+
+        <TimelineSection
           data={form}
           onChange={updateField}
         />

@@ -8,6 +8,7 @@ type ButtonVariant =
   | "secondary"
   | "outline"
   | "danger"
+  | "destructive"
   | "ghost";
 
 type ButtonSize = "sm" | "md" | "lg";
@@ -35,6 +36,9 @@ const variantStyles: Record<ButtonVariant, string> = {
 
   danger:
     "bg-red-600 text-white hover:bg-red-700 focus:ring-red-300",
+
+  destructive:
+  "bg-red-600 text-white hover:bg-red-700 focus:ring-red-300",
 
   ghost:
     "bg-transparent text-gray-700 hover:bg-gray-100 focus:ring-gray-300",

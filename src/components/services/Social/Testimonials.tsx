@@ -3,32 +3,27 @@
 import { motion } from "framer-motion";
 import { Star } from "lucide-react";
 
-const testimonials = [
-  {
-    name: "Minh Anh & Gia Huy",
-    content:
-      "DO Wedding đã giúp chúng mình lưu giữ những khoảnh khắc đẹp nhất. Đội ngũ rất chuyên nghiệp và tận tâm từ đầu đến cuối.",
-  },
-  {
-    name: "Thảo Vy & Quốc Bảo",
-    content:
-      "Bộ ảnh và Wedding Film vượt ngoài mong đợi. Mọi chi tiết đều được chăm chút rất chỉn chu và đầy cảm xúc.",
-  },
-  {
-    name: "Thanh Tùng & Ngọc Hân",
-    content:
-      "Từ khâu tư vấn đến ngày chụp đều rất nhẹ nhàng. Thành phẩm khiến cả gia đình đều vô cùng hài lòng.",
-  },
-];
+type Review = {
+  _id: string;
+  name: string;
+  location?: string;
+  content: string;
+  rating?: number;
+};
 
-export default function Testimonials() {
+type Props = {
+  reviews: Review[];
+};
+
+export default function Testimonials({
+  reviews,
+}: Props) {
+  if (!reviews?.length) return null;
+
   return (
     <section className="bg-white py-32">
-
       <div className="mx-auto max-w-7xl px-6">
-
         <div className="text-center">
-
           <p className="text-xs uppercase tracking-[8px] text-[#c8a86b]">
             KHÁCH HÀNG
           </p>
@@ -38,15 +33,12 @@ export default function Testimonials() {
             <br />
             Được Viết Bằng Cảm Xúc
           </h2>
-
         </div>
 
         <div className="mt-20 grid gap-8 lg:grid-cols-3">
-
-          {testimonials.map((item, index) => (
-
+          {reviews.map((item, index) => (
             <motion.div
-              key={item.name}
+              key={item._id}
               initial={{
                 opacity: 0,
                 y: 40,
@@ -59,8 +51,8 @@ export default function Testimonials() {
                 once: true,
               }}
               transition={{
-                duration: .6,
-                delay: index * .15,
+                duration: 0.6,
+                delay: index * 0.15,
               }}
               className="
                 rounded-[36px]
@@ -75,20 +67,17 @@ export default function Testimonials() {
                 hover:shadow-xl
               "
             >
-
               <div className="mb-8 flex gap-1">
-
-                {[...Array(5)].map((_, i) => (
-
-                  <Star
-                    key={i}
-                    size={18}
-                    fill="#c8a86b"
-                    className="text-[#c8a86b]"
-                  />
-
-                ))}
-
+                {[...Array(item.rating || 5)].map(
+                  (_, i) => (
+                    <Star
+                      key={i}
+                      size={18}
+                      fill="#c8a86b"
+                      className="text-[#c8a86b]"
+                    />
+                  )
+                )}
               </div>
 
               <p className="leading-8 text-gray-600">
@@ -96,21 +85,20 @@ export default function Testimonials() {
               </p>
 
               <div className="mt-10">
-
                 <h4 className="text-xl font-light text-[#222]">
                   {item.name}
                 </h4>
 
+                {item.location && (
+                  <p className="mt-2 text-sm text-gray-500">
+                    {item.location}
+                  </p>
+                )}
               </div>
-
             </motion.div>
-
           ))}
-
         </div>
-
       </div>
-
     </section>
   );
 }

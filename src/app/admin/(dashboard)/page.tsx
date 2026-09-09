@@ -7,6 +7,8 @@ import {
   Star,
   Eye,
   Mail,
+  Camera,
+  CalendarDays,
 } from "lucide-react";
 
 import DashboardCard from "@/components/admin/dashboard/DashboardCard";
@@ -15,46 +17,46 @@ type Dashboard = {
   totalAlbums: number;
   featuredAlbums: number;
   publishedAlbums: number;
+
+  totalServices: number;
+  totalBookings: number;
   totalContacts: number;
 };
 
 export default function DashboardPage() {
-  const [data, setData] =
-    useState<Dashboard>({
-      totalAlbums: 0,
-      featuredAlbums: 0,
-      publishedAlbums: 0,
-      totalContacts: 0,
-    });
+  const [data, setData] = useState<Dashboard>({
+    totalAlbums: 0,
+    featuredAlbums: 0,
+    publishedAlbums: 0,
 
-  const [loading, setLoading] =
-    useState(true);
+    totalServices: 0,
+    totalBookings: 0,
+    totalContacts: 0,
+  });
+
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const load = async () => {
-      try {
-        const res = await fetch(
-          "/api/admin/dashboard"
-        );
-
-        const json = await res.json();
-
-        if (json.success) {
-          setData(json.data);
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    load();
+    loadDashboard();
   }, []);
+
+  async function loadDashboard() {
+    try {
+      const res = await fetch("/api/admin/dashboard");
+      const json = await res.json();
+
+      if (json.success) {
+        setData(json.data);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="space-y-10">
-
       <div>
         <p className="text-xs uppercase tracking-[5px] text-[#c8a86b]">
           ADMIN
@@ -63,6 +65,10 @@ export default function DashboardPage() {
         <h1 className="mt-3 text-4xl font-light">
           Dashboard
         </h1>
+
+        <p className="mt-3 text-gray-500">
+          Tổng quan hệ thống DO Wedding
+        </p>
       </div>
 
       {loading ? (
@@ -70,7 +76,7 @@ export default function DashboardPage() {
           Đang tải...
         </div>
       ) : (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
 
           <DashboardCard
             title="Tổng Album"
@@ -91,6 +97,18 @@ export default function DashboardPage() {
           />
 
           <DashboardCard
+            title="Dịch vụ"
+            value={data.totalServices}
+            icon={<Camera size={28} />}
+          />
+
+          <DashboardCard
+            title="Booking"
+            value={data.totalBookings}
+            icon={<CalendarDays size={28} />}
+          />
+
+          <DashboardCard
             title="Liên hệ"
             value={data.totalContacts}
             icon={<Mail size={28} />}
@@ -98,7 +116,6 @@ export default function DashboardPage() {
 
         </div>
       )}
-
     </div>
   );
 }

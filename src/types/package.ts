@@ -1,3 +1,5 @@
+import type { Service } from "./service";
+
 export type Package = {
   _id: string;
 
@@ -5,7 +7,7 @@ export type Package = {
 
   slug: string;
 
-  serviceId: string;
+  serviceId: string | Service;
 
   category: string;
 

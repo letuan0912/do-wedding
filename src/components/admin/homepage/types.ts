@@ -62,6 +62,18 @@ export interface HomePageData {
   counter4Suffix: string;
 
   counter4Label: string;
+
+  // ================= TIMELINE =================
+
+  timelineSubtitle: string;
+
+  timelineTitle: string;
+
+  timelineSteps: {
+    number: string;
+    title: string;
+    description: string;
+  }[];
 }
 
 export const initialHomePage: HomePageData = {
@@ -128,4 +140,12 @@ export const initialHomePage: HomePageData = {
   counter4Suffix: "%",
 
   counter4Label: "Khách hài lòng",
+
+  // ================= TIMELINE =================
+
+  timelineSubtitle: "",
+
+  timelineTitle: "",
+
+  timelineSteps: [],
 };

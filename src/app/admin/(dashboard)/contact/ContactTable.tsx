@@ -88,6 +88,6 @@ export default function ContactTable({
           Không tìm thấy dữ liệu.
         </div>
       )}
-    </div>
+    </Card>
   );
 }

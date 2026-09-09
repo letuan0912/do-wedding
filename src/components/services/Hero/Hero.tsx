@@ -1,34 +1,83 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowDown, ArrowRight } from "lucide-react";
+import {
+  ArrowDown,
+  ArrowRight,
+} from "lucide-react";
+
+type HomePageData = {
+  heroBadge: string;
+  heroTitle1: string;
+  heroHighlight: string;
+  heroTitle2: string;
+  heroDescription: string;
+  heroPrimaryButtonText: string;
+  heroPrimaryButtonLink: string;
+  heroSecondaryButtonText: string;
+  heroSecondaryButtonLink: string;
+  heroBackground: string;
+  heroVideo: string;
+  heroPoster: string;
+};
 
 export default function Hero() {
+  const [data, setData] =
+    useState<HomePageData | null>(
+      null
+    );
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch(
+          "/api/homepage",
+          {
+            cache: "no-store",
+          }
+        );
+
+        const result =
+          await res.json();
+
+        if (result.success) {
+          setData(result.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    load();
+  }, []);
+
+  if (!data) return null;
+
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black">
-
-      {/* Background Video */}
-
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="metadata"
-        className="absolute inset-0 h-full w-full object-cover"
-      >
-        <source
-          src="/video/wedding/elegant.mp4"
-          type="video/mp4"
-        />
-      </video>
-
-      {/* Overlay */}
+      {(data.heroVideo ||
+        data.heroBackground) && (
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={data.heroPoster}
+          className="absolute inset-0 h-full w-full object-cover"
+        >
+          <source
+            src={
+              data.heroVideo
+            }
+            type="video/mp4"
+          />
+        </video>
+      )}
 
       <div className="absolute inset-0 bg-black/60" />
-
-      {/* Gold Glow */}
 
       <div
         className="
@@ -45,25 +94,36 @@ export default function Hero() {
         "
       />
 
-      {/* Content */}
-
       <div className="relative z-10 mx-auto max-w-7xl px-6 text-center">
-
         <motion.p
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: .6 }}
+          initial={{
+            opacity: 0,
+            y: 25,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
+          transition={{
+            duration: 0.6,
+          }}
           className="text-xs uppercase tracking-[10px] text-[#d6b16b]"
         >
-          DO WEDDING
+          {data.heroBadge}
         </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 35 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{
+            opacity: 0,
+            y: 35,
+          }}
+          animate={{
+            opacity: 1,
+            y: 0,
+          }}
           transition={{
-            duration: .8,
-            delay: .2,
+            duration: 0.8,
+            delay: 0.2,
           }}
           className="
             mt-8
@@ -74,19 +134,29 @@ export default function Hero() {
             md:text-8xl
           "
         >
-          Biến Khoảnh Khắc
+          {data.heroTitle1}
+
           <br />
-          Thành Ký Ức
+
+          <span className="text-[#d6b16b]">
+            {data.heroHighlight}
+          </span>
+
           <br />
-          Trọn Đời
+
+          {data.heroTitle2}
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
           transition={{
-            delay: .5,
-            duration: .8,
+            delay: 0.5,
+            duration: 0.8,
           }}
           className="
             mx-auto
@@ -97,24 +167,26 @@ export default function Hero() {
             text-white/75
           "
         >
-          Từ bộ ảnh cưới sang trọng đến những thước phim điện ảnh,
-          DO Wedding đồng hành cùng bạn lưu giữ những khoảnh khắc
-          đẹp nhất bằng sự tinh tế và cảm xúc chân thật.
+          {data.heroDescription}
         </motion.p>
 
-        {/* Buttons */}
-
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          initial={{
+            opacity: 0,
+          }}
+          animate={{
+            opacity: 1,
+          }}
           transition={{
-            delay: .8,
+            delay: 0.8,
           }}
           className="mt-14 flex flex-wrap justify-center gap-5"
         >
-
           <Link
-            href="/bang-gia"
+            href={
+              data.heroPrimaryButtonLink ||
+              "#"
+            }
             className="
               inline-flex
               items-center
@@ -128,14 +200,20 @@ export default function Hero() {
               hover:bg-[#b99655]
             "
           >
-            Xem Bảng Giá
+            {
+              data.heroPrimaryButtonText
+            }
 
-            <ArrowRight size={18} />
-
+            <ArrowRight
+              size={18}
+            />
           </Link>
 
           <Link
-            href="/album"
+            href={
+              data.heroSecondaryButtonLink ||
+              "#"
+            }
             className="
               rounded-full
               border
@@ -148,14 +226,12 @@ export default function Hero() {
               hover:text-black
             "
           >
-            Khám Phá Album
+            {
+              data.heroSecondaryButtonText
+            }
           </Link>
-
         </motion.div>
-
       </div>
-
-      {/* Scroll */}
 
       <motion.div
         animate={{
@@ -177,7 +253,6 @@ export default function Hero() {
           className="text-white/70"
         />
       </motion.div>
-
     </section>
   );
 }

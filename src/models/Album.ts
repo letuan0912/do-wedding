@@ -14,6 +14,7 @@ const AlbumSchema = new Schema(
       unique: true,
       index: true,
       trim: true,
+      lowercase: true,
     },
 
     description: {
@@ -24,13 +25,17 @@ const AlbumSchema = new Schema(
 
     category: {
       type: String,
-      default: "Studio",
+      required: true,
+      default: "studio",
       trim: true,
+      lowercase: true,
+      index: true,
     },
 
     cover: {
       type: String,
       required: true,
+      trim: true,
     },
 
     images: {
@@ -41,16 +46,19 @@ const AlbumSchema = new Schema(
     featured: {
       type: Boolean,
       default: false,
+      index: true,
     },
 
     isPublished: {
       type: Boolean,
       default: true,
+      index: true,
     },
 
     sortOrder: {
       type: Number,
       default: 0,
+      index: true,
     },
   },
   {
@@ -58,7 +66,5 @@ const AlbumSchema = new Schema(
   }
 );
 
-const Album =
-  models.Album || model("Album", AlbumSchema);
-
-export default Album;
+export default models.Album ||
+  model("Album", AlbumSchema);

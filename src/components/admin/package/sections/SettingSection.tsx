@@ -37,7 +37,7 @@ export default function SettingSection({
         <Switch
           label="Hiển thị"
           checked={published}
-          onCheckedChange={
+          onChange={
             setPublished
           }
         />
@@ -45,7 +45,7 @@ export default function SettingSection({
         <Switch
           label="Nổi bật"
           checked={featured}
-          onCheckedChange={
+          onChange={
             setFeatured
           }
         />

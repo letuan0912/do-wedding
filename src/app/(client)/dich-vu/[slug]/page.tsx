@@ -53,7 +53,6 @@ export default async function ServiceDetailPage({
 
       <PackageInfo
         service={service}
-        packages={packages}
       />
 
       <PackageGallery service={service} />

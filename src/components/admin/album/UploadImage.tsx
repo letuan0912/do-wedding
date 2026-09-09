@@ -2,101 +2,183 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { Upload, X, Loader2 } from "lucide-react";
+import {
+  ImagePlus,
+  Upload,
+  Trash2,
+  Loader2,
+} from "lucide-react";
 import { toast } from "sonner";
 
-type Props = {
-  title: string;
+import Button from "@/components/admin/ui/Button";
+
+interface Props {
+  title?: string;
+
   value?: string;
+
   values?: string[];
+
   multiple?: boolean;
-  onChange?: (url: string) => void;
-  onMultipleChange?: (urls: string[]) => void;
-};
+
+  onChange?: (
+    value: string
+  ) => void;
+
+  onMultipleChange?: (
+    values: string[]
+  ) => void;
+}
 
 export default function UploadImage({
-  title,
+
+  title = "Upload",
+
   value,
+
   values = [],
+
   multiple = false,
+
   onChange,
+
   onMultipleChange,
+
 }: Props) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [uploading, setUploading] = useState(false);
 
-  const uploadFile = async (file: File): Promise<string> => {
-    const form = new FormData();
-    form.append("file", file);
+  const inputRef =
+    useRef<HTMLInputElement>(null);
 
-    const res = await fetch("/api/upload", {
-      method: "POST",
-      body: form,
-    });
+  const [loading,
+    setLoading] =
+    useState(false);
 
-    const data = await res.json();
+  const uploadFile =
+    async (file: File) => {
 
-    if (!res.ok || !data.success) {
-      throw new Error(data.message || "Upload thất bại");
-    }
+      const form =
+        new FormData();
 
-    return data.url;
-  };
-
-  const handleFiles = async (files: FileList | null) => {
-    if (!files || files.length === 0) return;
-
-    try {
-      setUploading(true);
-
-      const fileArray = Array.from(files);
-
-      const invalidFile = fileArray.find(
-        (file) => !file.type.startsWith("image/")
+      form.append(
+        "file",
+        file
       );
 
-      if (invalidFile) {
-        toast.error("Chỉ hỗ trợ file hình ảnh.");
-        return;
-      }
+      const res =
+        await fetch(
+          "/api/admin/upload",
+          {
 
-      if (!multiple) {
-        const url = await uploadFile(fileArray[0]);
+            method: "POST",
 
-        onChange?.(url);
+            body: form,
 
-        toast.success("Upload thành công");
-      } else {
-        const urls = await Promise.all(
-          fileArray.map(uploadFile)
+          }
         );
 
-        onMultipleChange?.([...values, ...urls]);
+      const data =
+        await res.json();
+
+      if (!data.success) {
+
+        throw new Error(
+          data.message
+        );
+
+      }
+
+      return data.url;
+
+    };
+
+  const handleUpload =
+    async (
+      e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+
+      const files =
+        e.target.files;
+
+      if (!files?.length)
+        return;
+
+      setLoading(true);
+
+      try {
+
+        if (!multiple) {
+
+          const url =
+            await uploadFile(
+              files[0]
+            );
+
+          onChange?.(
+            url
+          );
+
+        } else {
+
+          const uploaded =
+            [...values];
+
+          for (
+            const file of Array.from(
+              files
+            )
+          ) {
+
+            const url =
+              await uploadFile(
+                file
+              );
+
+            uploaded.push(
+              url
+            );
+
+          }
+
+          onMultipleChange?.(
+            uploaded
+          );
+
+        }
 
         toast.success(
-          `Đã upload ${urls.length} ảnh`
+          "Upload thành công."
         );
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Upload thất bại");
-    } finally {
-      setUploading(false);
 
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
-    }
-  };
+      } catch {
 
-  return (
-    <div>
-      <label className="mb-3 block font-medium">
-        {title}
-      </label>
+        toast.error(
+          "Upload thất bại."
+        );
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
+      return (
+
+    <div className="space-y-4">
+
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple={multiple}
+        hidden
+        onChange={handleUpload}
+      />
 
       <div
-        onClick={() => !uploading && inputRef.current?.click()}
+        onClick={() =>
+          inputRef.current?.click()
+        }
         className="
           flex
           min-h-[220px]
@@ -107,63 +189,89 @@ export default function UploadImage({
           rounded-2xl
           border-2
           border-dashed
-          border-[#c8a86b]
-          bg-[#faf8f4]
-          transition
-          hover:bg-[#f8f3ea]
+          border-[#d8c29a]
+          bg-[#faf8f5]
+          transition-all
+          hover:border-[#c8a86b]
+          hover:bg-[#f7f3eb]
         "
       >
-        {uploading ? (
-          <>
+
+        {loading ? (
+
+          <div className="flex flex-col items-center gap-4">
+
             <Loader2
-              size={45}
+              size={36}
               className="animate-spin text-[#c8a86b]"
             />
 
-            <p className="mt-4 text-gray-600">
-              Đang upload...
-            </p>
-          </>
-        ) : (
-          <>
-            <Upload
-              size={45}
-              className="text-[#c8a86b]"
-            />
-
-            <p className="mt-4 text-lg font-medium">
-              Click để chọn ảnh
-            </p>
-
             <p className="text-sm text-gray-500">
-              JPG • PNG • WEBP
+              Đang tải ảnh...
             </p>
+
+          </div>
+
+        ) : (
+
+          <>
+
+            <div
+              className="
+                mb-5
+                rounded-full
+                bg-[#c8a86b]/10
+                p-5
+                text-[#c8a86b]
+              "
+            >
+
+              <Upload size={34} />
+
+            </div>
+
+            <h3 className="text-lg font-semibold text-gray-800">
+              {title}
+            </h3>
+
+            <p className="mt-2 text-sm text-gray-500">
+              Nhấn để chọn hoặc kéo thả ảnh
+            </p>
+
+            <Button
+              className="mt-6"
+              leftIcon={
+                <ImagePlus size={18} />
+              }
+            >
+              Chọn ảnh
+            </Button>
+
           </>
+
         )}
+
       </div>
 
-      <input
-        ref={inputRef}
-        hidden
-        type="file"
-        accept="image/*"
-        multiple={multiple}
-        onChange={(e) => handleFiles(e.target.files)}
-      />
-
       {!multiple && value && (
-        <div className="relative mt-5 h-52 overflow-hidden rounded-2xl">
+
+        <div className="relative overflow-hidden rounded-2xl border">
+
           <Image
-            src={value}
-            alt="Preview"
-            fill
-            sizes="100vw"
-            className="object-cover"
-          />
+  src={value}
+  alt="Preview"
+  width={1200}
+  height={800}
+  sizes="(max-width:768px) 100vw, 500px"
+  className="w-full object-cover"
+  priority
+/>
 
           <button
             type="button"
-            onClick={() => onChange?.("")}
+            onClick={() =>
+              onChange?.("")
+            }
             className="
               absolute
               right-3
@@ -172,55 +280,127 @@ export default function UploadImage({
               bg-red-500
               p-2
               text-white
+              shadow-lg
               transition
               hover:bg-red-600
             "
           >
-            <X size={18} />
+            <Trash2 size={16} />
           </button>
+
         </div>
+
       )}
+            {multiple && values.length > 0 && (
 
-      {multiple && values.length > 0 && (
-        <div className="mt-5 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
-          {values.map((img, index) => (
-            <div
-              key={`${img}-${index}`}
-              className="relative h-40 overflow-hidden rounded-xl"
-            >
-              <Image
-                src={img}
-                alt={`Ảnh ${index + 1}`}
-                fill
-                sizes="(max-width:768px) 50vw, (max-width:1280px) 33vw, 25vw"
-                className="object-cover"
-              />
+        <div
+          className="
+            grid
+            gap-4
+            sm:grid-cols-2
+            lg:grid-cols-3
+          "
+        >
 
-              <button
-                type="button"
-                onClick={() =>
-                  onMultipleChange?.(
-                    values.filter((_, i) => i !== index)
-                  )
-                }
+          {values.map(
+            (image, index) => (
+
+              <div
+                key={`${image}-${index}`}
                 className="
-                  absolute
-                  right-2
-                  top-2
-                  rounded-full
-                  bg-red-500
-                  p-1
-                  text-white
-                  transition
-                  hover:bg-red-600
+                  group
+                  relative
+                  overflow-hidden
+                  rounded-2xl
+                  border
+                  bg-white
                 "
               >
-                <X size={15} />
-              </button>
-            </div>
-          ))}
+
+                <Image
+  src={image}
+  alt={`Album ${index + 1}`}
+  width={600}
+  height={600}
+  sizes="(max-width:768px) 50vw, (max-width:1200px) 33vw, 250px"
+  className="
+    aspect-square
+    w-full
+    object-cover
+    transition
+    duration-300
+    group-hover:scale-105
+  "
+/>
+
+                <div
+                  className="
+                    absolute
+                    inset-0
+                    flex
+                    items-start
+                    justify-end
+                    bg-black/0
+                    p-3
+                    transition
+                    group-hover:bg-black/10
+                  "
+                >
+
+                  <button
+                    type="button"
+                    onClick={() =>
+                      onMultipleChange?.(
+                        values.filter(
+                          (_, i) =>
+                            i !== index
+                        )
+                      )
+                    }
+                    className="
+                      rounded-full
+                      bg-red-500
+                      p-2
+                      text-white
+                      opacity-0
+                      shadow-lg
+                      transition
+                      group-hover:opacity-100
+                    "
+                  >
+                    <Trash2 size={15} />
+                  </button>
+
+                </div>
+
+                <div
+                  className="
+                    absolute
+                    bottom-3
+                    left-3
+                    rounded-full
+                    bg-white/90
+                    px-3
+                    py-1
+                    text-xs
+                    font-medium
+                    shadow
+                  "
+                >
+                  #{index + 1}
+                </div>
+
+              </div>
+
+            )
+          )}
+
         </div>
+
       )}
+
     </div>
+
   );
+
 }

@@ -19,7 +19,7 @@ export default function Hero() {
 
       {/* Content */}
 
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center pt-28">
 
         <div className="max-w-3xl px-6 text-center text-white">
 

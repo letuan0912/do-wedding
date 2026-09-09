@@ -2,57 +2,70 @@ import { Schema, models, model } from "mongoose";
 
 const HomePageSchema = new Schema(
   {
+    // =====================================
+    // COUNTER
+    // =====================================
+
     counter1Number: {
-  type: Number,
-  default: 500,
-},
-counter1Suffix: {
-  type: String,
-  default: "+",
-},
-counter1Label: {
-  type: String,
-  default: "Cặp đôi",
-},
+      type: Number,
+      default: 500,
+    },
 
-counter2Number: {
-  type: Number,
-  default: 8,
-},
-counter2Suffix: {
-  type: String,
-  default: "+",
-},
-counter2Label: {
-  type: String,
-  default: "Năm kinh nghiệm",
-},
+    counter1Suffix: {
+      type: String,
+      default: "+",
+    },
 
-counter3Number: {
-  type: Number,
-  default: 1200,
-},
-counter3Suffix: {
-  type: String,
-  default: "+",
-},
-counter3Label: {
-  type: String,
-  default: "Album hoàn thành",
-},
+    counter1Label: {
+      type: String,
+      default: "Cặp đôi",
+    },
 
-counter4Number: {
-  type: Number,
-  default: 100,
-},
-counter4Suffix: {
-  type: String,
-  default: "%",
-},
-counter4Label: {
-  type: String,
-  default: "Khách hài lòng",
-},
+    counter2Number: {
+      type: Number,
+      default: 8,
+    },
+
+    counter2Suffix: {
+      type: String,
+      default: "+",
+    },
+
+    counter2Label: {
+      type: String,
+      default: "Năm kinh nghiệm",
+    },
+
+    counter3Number: {
+      type: Number,
+      default: 1200,
+    },
+
+    counter3Suffix: {
+      type: String,
+      default: "+",
+    },
+
+    counter3Label: {
+      type: String,
+      default: "Album hoàn thành",
+    },
+
+    counter4Number: {
+      type: Number,
+      default: 100,
+    },
+
+    counter4Suffix: {
+      type: String,
+      default: "%",
+    },
+
+    counter4Label: {
+      type: String,
+      default: "Khách hài lòng",
+    },
+
     // =====================================
     // HERO
     // =====================================
@@ -155,6 +168,41 @@ counter4Label: {
       type: String,
       default: "",
     },
+
+    // =====================================
+    // TIMELINE
+    // =====================================
+
+    timelineSubtitle: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    timelineTitle: {
+      type: String,
+      default: "",
+      trim: true,
+    },
+
+    timelineSteps: [
+      {
+        number: {
+          type: String,
+          default: "",
+        },
+
+        title: {
+          type: String,
+          default: "",
+        },
+
+        description: {
+          type: String,
+          default: "",
+        },
+      },
+    ],
   },
   {
     timestamps: true,

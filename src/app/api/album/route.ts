@@ -74,9 +74,50 @@ export async function GET(req: Request) {
       .limit(limit)
       .lean();
 
+    // ===========================
+    // Danh mục động
+    // ===========================
+
+    const categoryData = await Album.aggregate([
+      {
+        $match: {
+          isPublished: true,
+        },
+      },
+      {
+        $group: {
+          _id: "$category",
+          count: {
+            $sum: 1,
+          },
+        },
+      },
+      {
+        $sort: {
+          _id: 1,
+        },
+      },
+    ]);
+
+    const categories = [
+      {
+        value: "all",
+        label: "Tất cả",
+        count: total,
+      },
+      ...categoryData.map((item) => ({
+        value: item._id,
+        label:
+          item._id.charAt(0).toUpperCase() +
+          item._id.slice(1),
+        count: item.count,
+      })),
+    ];
+
     return NextResponse.json({
       success: true,
       data: albums,
+      categories,
       pagination: {
         page,
         limit,
@@ -122,7 +163,9 @@ export async function POST(req: Request) {
       title: body.title,
       slug: slugify(body.title),
       description: body.description,
-      category: body.category,
+      category: body.category
+  ?.trim()
+  .toLowerCase(),
       cover: body.cover,
       images: body.images,
       featured: body.featured ?? false,

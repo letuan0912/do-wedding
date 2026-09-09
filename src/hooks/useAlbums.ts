@@ -10,14 +10,26 @@ type Pagination = {
   total: number;
 };
 
+export type AlbumCategory = {
+  value: string;
+  label: string;
+  count: number;
+};
+
 export default function useAlbums(
   page: number,
   category: string,
   search: string,
   sort: string
 ) {
-  const [albums, setAlbums] = useState<Album[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [albums, setAlbums] =
+    useState<Album[]>([]);
+
+  const [categories, setCategories] =
+    useState<AlbumCategory[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
   const [pagination, setPagination] =
     useState<Pagination>({
@@ -27,19 +39,21 @@ export default function useAlbums(
     });
 
   useEffect(() => {
-    const controller = new AbortController();
+    const controller =
+      new AbortController();
 
     const fetchAlbums = async () => {
       try {
         setLoading(true);
 
-        const params = new URLSearchParams({
-          page: String(page),
-          limit: "9",
-          category,
-          search,
-          sort,
-        });
+        const params =
+          new URLSearchParams({
+            page: String(page),
+            limit: "9",
+            category,
+            search,
+            sort,
+          });
 
         const res = await fetch(
           `/api/album?${params.toString()}`,
@@ -49,7 +63,9 @@ export default function useAlbums(
         );
 
         if (!res.ok) {
-          throw new Error("Không thể tải Album");
+          throw new Error(
+            "Không thể tải Album"
+          );
         }
 
         const data = await res.json();
@@ -57,15 +73,24 @@ export default function useAlbums(
         if (data.success) {
           setAlbums(data.data ?? []);
 
+          setCategories(
+            data.categories ?? []
+          );
+
           setPagination({
-            page: data.pagination?.page ?? 1,
+            page:
+              data.pagination?.page ?? 1,
             totalPages:
-              data.pagination?.totalPages ?? 1,
-            total: data.pagination?.total ?? 0,
+              data.pagination
+                ?.totalPages ?? 1,
+            total:
+              data.pagination?.total ?? 0,
           });
         }
       } catch (error: any) {
-        if (error.name !== "AbortError") {
+        if (
+          error.name !== "AbortError"
+        ) {
           console.error(error);
         }
       } finally {
@@ -75,11 +100,18 @@ export default function useAlbums(
 
     fetchAlbums();
 
-    return () => controller.abort();
-  }, [page, category, search, sort]);
+    return () =>
+      controller.abort();
+  }, [
+    page,
+    category,
+    search,
+    sort,
+  ]);
 
   return {
     albums,
+    categories,
     loading,
     pagination,
   };

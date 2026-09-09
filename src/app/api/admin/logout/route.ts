@@ -5,10 +5,10 @@ export async function POST() {
     success: true,
   });
 
-  response.cookies.set("token", "", {
+  response.cookies.set("admin-token", "", {
     httpOnly: true,
-    expires: new Date(0),
     path: "/",
+    maxAge: 0,
   });
 
   return response;

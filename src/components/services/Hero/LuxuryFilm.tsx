@@ -1,13 +1,47 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
+type HomePageData = {
+  heroVideo: string;
+  heroPoster: string;
+};
+
 export default function LuxuryFilm() {
+  const [data, setData] =
+    useState<HomePageData | null>(
+      null
+    );
+
+  useEffect(() => {
+    const load = async () => {
+      try {
+        const res = await fetch(
+          "/api/homepage",
+          {
+            cache: "no-store",
+          }
+        );
+
+        const result =
+          await res.json();
+
+        if (result.success) {
+          setData(result.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    load();
+  }, []);
+
+  if (!data?.heroVideo) return null;
+
   return (
     <section className="relative overflow-hidden bg-[#0b0b0b] py-36">
-
-      {/* Gold Glow */}
-
       <div
         className="
           absolute
@@ -24,17 +58,23 @@ export default function LuxuryFilm() {
       />
 
       <div className="relative z-10 mx-auto max-w-7xl px-6">
-
-        {/* Heading */}
-
         <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: .8 }}
+          initial={{
+            opacity: 0,
+            y: 40,
+          }}
+          whileInView={{
+            opacity: 1,
+            y: 0,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 0.8,
+          }}
           className="mx-auto mb-20 max-w-4xl text-center"
         >
-
           <p className="text-xs uppercase tracking-[10px] text-[#d6b16b]">
             CINEMATIC EXPERIENCE
           </p>
@@ -52,27 +92,32 @@ export default function LuxuryFilm() {
             những thước phim điện ảnh để câu chuyện tình yêu
             được lưu giữ một cách chân thật nhất.
           </p>
-
         </motion.div>
 
-        {/* Video */}
-
         <motion.div
-          initial={{ opacity: 0, scale: .96 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: .8 }}
+          initial={{
+            opacity: 0,
+            scale: 0.96,
+          }}
+          whileInView={{
+            opacity: 1,
+            scale: 1,
+          }}
+          viewport={{
+            once: true,
+          }}
+          transition={{
+            duration: 0.8,
+          }}
           className="group relative overflow-hidden rounded-[42px]"
         >
-
-          {/* Video */}
-
           <video
             autoPlay
             muted
             loop
             playsInline
             preload="metadata"
+            poster={data.heroPoster}
             className="
               aspect-video
               w-full
@@ -83,20 +128,19 @@ export default function LuxuryFilm() {
             "
           >
             <source
-              src="/video/wedding/elegant.mp4"
+              src={data.heroVideo}
               type="video/mp4"
             />
           </video>
 
-          {/* Overlay */}
-
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/10" />
-
-          {/* Reflection */}
 
           <motion.div
             animate={{
-              x: ["-200%", "250%"],
+              x: [
+                "-200%",
+                "250%",
+              ],
             }}
             transition={{
               duration: 5,
@@ -116,8 +160,6 @@ export default function LuxuryFilm() {
               blur-xl
             "
           />
-
-          {/* Badge */}
 
           <div
             className="
@@ -140,8 +182,6 @@ export default function LuxuryFilm() {
             Wedding Film
           </div>
 
-          {/* Quality */}
-
           <div
             className="
               absolute
@@ -163,22 +203,15 @@ export default function LuxuryFilm() {
             4K CINEMA
           </div>
 
-          {/* Bottom */}
-
           <div className="absolute bottom-10 left-10">
-
             <h3 className="text-4xl font-extralight text-white">
               Every Love Story
               <br />
               Deserves A Beautiful Film
             </h3>
-
           </div>
-
         </motion.div>
-
       </div>
-
     </section>
   );
 }

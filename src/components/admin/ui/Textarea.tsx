@@ -3,6 +3,7 @@
 import React, {
   forwardRef,
   TextareaHTMLAttributes,
+  useId,
 } from "react";
 
 interface TextareaProps
@@ -36,11 +37,8 @@ const Textarea = forwardRef<
     },
     ref
   ) => {
-    const textareaId =
-      id ||
-      `textarea-${Math.random()
-        .toString(36)
-        .substring(2, 9)}`;
+    const generatedId = useId();
+    const textareaId = id ?? generatedId;
 
     const currentLength =
       typeof value === "string"
@@ -104,7 +102,9 @@ const Textarea = forwardRef<
             <div className="flex justify-end px-4 pb-3">
               <span className="text-xs text-gray-400">
                 {currentLength}
-                {maxLength ? ` / ${maxLength}` : ""}
+                {maxLength
+                  ? ` / ${maxLength}`
+                  : ""}
               </span>
             </div>
           )}

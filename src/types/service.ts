@@ -16,8 +16,6 @@ export type Service = {
 
   price: string;
 
-  
-
   // ========= IMAGES =========
 
   thumbnail: string;

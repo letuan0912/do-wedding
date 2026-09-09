@@ -53,9 +53,6 @@ export default function HeroContent({
         lg:mx-0
       "
     >
-      <HeroBadge
-        badge={hero.heroBadge}
-      />
 
       <HeroHeading
         title1={hero.heroTitle1}
