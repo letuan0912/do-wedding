@@ -22,7 +22,6 @@ export default function HeroSection({
   return (
     <FormCard title="Hero Banner">
       <div className="space-y-8">
-        {/* Badge + Highlight */}
         <div className="grid grid-cols-2 gap-6">
           <Input
             label="Badge"
@@ -47,7 +46,6 @@ export default function HeroSection({
           />
         </div>
 
-        {/* Title */}
         <div className="grid grid-cols-2 gap-6">
           <Input
             label="Tiêu đề dòng 1"
@@ -72,7 +70,6 @@ export default function HeroSection({
           />
         </div>
 
-        {/* Description */}
         <Textarea
           label="Mô tả"
           rows={5}
@@ -85,39 +82,20 @@ export default function HeroSection({
           }
         />
 
-        {/* Hero Assets */}
-        <div className="grid grid-cols-2 gap-8">
-          <div>
-            <h4 className="mb-3 text-sm font-semibold text-gray-700">
-              Ảnh nền Hero
-            </h4>
+        <div>
+          <h4 className="mb-3 text-sm font-semibold text-gray-700">
+            Poster Video
+          </h4>
 
-            <ImageUpload
-              value={data.heroBackground}
-              onChange={(url) =>
-                onChange(
-                  "heroBackground",
-                  url
-                )
-              }
-            />
-          </div>
-
-          <div>
-            <h4 className="mb-3 text-sm font-semibold text-gray-700">
-              Poster Video
-            </h4>
-
-            <ImageUpload
-              value={data.heroPoster}
-              onChange={(url) =>
-                onChange(
-                  "heroPoster",
-                  url
-                )
-              }
-            />
-          </div>
+          <ImageUpload
+            value={data.heroPoster}
+            onChange={(url) =>
+              onChange(
+                "heroPoster",
+                url
+              )
+            }
+          />
         </div>
 
         <Input
@@ -132,7 +110,6 @@ export default function HeroSection({
           }
         />
 
-        {/* Primary Button */}
         <div className="grid grid-cols-2 gap-6">
           <Input
             label="Tên nút chính"
@@ -157,7 +134,6 @@ export default function HeroSection({
           />
         </div>
 
-        {/* Secondary Button */}
         <div className="grid grid-cols-2 gap-6">
           <Input
             label="Tên nút phụ"

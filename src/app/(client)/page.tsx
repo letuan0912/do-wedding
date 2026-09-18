@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useState } from "react";
+
 import Hero from "@/components/home/Hero";
 import About from "@/components/home/About";
 import WhyChooseUs from "@/components/home/WhyChooseUs";
@@ -10,7 +14,50 @@ import Contact from "@/components/home/Contact";
 
 import LuxuryTimeline from "@/components/services/Process/LuxuryTimeline";
 
+interface HomePageData {
+  timelineSubtitle: string;
+  timelineTitle: string;
+  timelineSteps: {
+    number: string;
+    title: string;
+    description: string;
+  }[];
+}
+
+const initialData: HomePageData = {
+  timelineSubtitle: "QUY TRÌNH",
+  timelineTitle:
+    "Đồng Hành Cùng Bạn Từ Ý Tưởng Đến Kỷ Niệm",
+  timelineSteps: [],
+};
+
 export default function Home() {
+  const [data, setData] =
+    useState<HomePageData>(initialData);
+
+  useEffect(() => {
+    async function loadHomepage() {
+      try {
+        const res = await fetch("/api/homepage", {
+          cache: "no-store",
+        });
+
+        const result = await res.json();
+
+        if (result.success) {
+          setData({
+            ...initialData,
+            ...result.data,
+          });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadHomepage();
+  }, []);
+
   return (
     <main className="bg-white">
       <Hero />
@@ -22,40 +69,9 @@ export default function Home() {
       <Counter />
 
       <LuxuryTimeline
-        subtitle="QUY TRÌNH"
-        title="Đồng Hành Cùng Bạn Từ Ý Tưởng Đến Kỷ Niệm"
-        steps={[
-          {
-            number: "01",
-            title: "Tư Vấn",
-            description:
-              "Lắng nghe mong muốn, tư vấn concept, địa điểm và gói dịch vụ phù hợp.",
-          },
-          {
-            number: "02",
-            title: "Lên Concept",
-            description:
-              "Xây dựng ý tưởng, lựa chọn trang phục, makeup và chuẩn bị lịch trình.",
-          },
-          {
-            number: "03",
-            title: "Chụp & Quay",
-            description:
-              "Thực hiện buổi chụp với đội ngũ nhiếp ảnh và quay phim chuyên nghiệp.",
-          },
-          {
-            number: "04",
-            title: "Hậu Kỳ",
-            description:
-              "Chỉnh màu, retouch ảnh và dựng Wedding Film theo phong cách điện ảnh.",
-          },
-          {
-            number: "05",
-            title: "Bàn Giao",
-            description:
-              "Hoàn thiện album, video và bàn giao toàn bộ sản phẩm đúng tiến độ.",
-          },
-        ]}
+        subtitle={data.timelineSubtitle}
+        title={data.timelineTitle}
+        steps={data.timelineSteps}
       />
 
       <Services />

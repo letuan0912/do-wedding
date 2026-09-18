@@ -19,7 +19,7 @@ export default function HomepageManager() {
     save,
     updateField,
   } = useHomepage();
-
+  
   if (loading) {
     return <Loading />;
   }
