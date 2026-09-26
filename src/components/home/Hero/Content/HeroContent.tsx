@@ -2,28 +2,19 @@
 
 import { motion } from "framer-motion";
 
-import HeroBadge from "./HeroBadge";
 import HeroHeading from "./HeroHeading";
 import HeroButtons from "./HeroButtons";
 import HeroFeatures from "./HeroFeatures";
 
 export interface HeroData {
   heroBadge: string;
-
   heroTitle1: string;
-
   heroHighlight: string;
-
   heroTitle2: string;
-
   heroDescription: string;
-
   heroPrimaryButtonText: string;
-
   heroPrimaryButtonLink: string;
-
   heroSecondaryButtonText: string;
-
   heroSecondaryButtonLink: string;
 }
 
@@ -36,15 +27,9 @@ export default function HeroContent({
 }: HeroContentProps) {
   return (
     <motion.div
-      initial={{
-        opacity: 0,
-      }}
-      animate={{
-        opacity: 1,
-      }}
-      transition={{
-        duration: 0.8,
-      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
       className="
         relative
         z-10
@@ -53,8 +38,6 @@ export default function HeroContent({
         lg:mx-0
       "
     >
-      <HeroBadge text={hero.heroBadge} />
-
       <HeroHeading
         title1={hero.heroTitle1}
         highlight={hero.heroHighlight}
